@@ -5,18 +5,18 @@ error_reporting(0);
 class platos
 {
   
-   public function platos( string $coper, string $ccadena, int $nrubro, int $nsubrubro, int $sucursal)
+   public function platos( string $cOper, string $cCadena, int $nRubro, int $nSubRubro, int $Sucursal)
    {
-        if (!isset($sucursal) || !isset($nrubro) || !isset($nsubrubro) || !isset($coper) || !isset($ccadena)) {
+        if (!isset($Sucursal) || !isset($nRubro) || !isset($nSubRubro) || !isset($cOper) || !isset($cCadena)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_Platos", [
-            "coper" => $coper,
-            "ccadena" => $ccadena,
-            "nrubro" => $nrubro,
-            "nsubrubro" => $nsubrubro,
-            "sucursal" => $sucursal
+            "coper" => $cOper,
+            "ccadena" => $cCadena,
+            "nrubro" => $nRubro,
+            "nsubrubro" => $nSubRubro,
+            "sucursal" => $Sucursal
         ],TRUE);
 
         if (!$R) {
@@ -27,14 +27,14 @@ class platos
         return $R;
     }
 
-   public function platosGustos( int $idplato)
+   public function platosGustos( int $idPlato)
    {
-        if (!isset($idplato)) {
+        if (!isset($idPlato)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_PlatosGustos", [
-            "idplato" => $idplato
+            "idplato" => $idPlato
         ],TRUE);
 
         if (!$R) {
@@ -45,14 +45,14 @@ class platos
         return $R;
    }
 
-   public function platosTamanios( int $idplato, int $idSector)
+   public function platosTamanios( int $idPlato, int $idSector)
    {
-        if (!isset($idplato) || !isset($idSector)) {
+        if (!isset($idPlato) || !isset($idSector)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_PlatosTamanios", [
-            "idplato" => $idplato,
+            "idplato" => $idPlato,
             "idSector" => $idSector
         ],TRUE);
 
@@ -64,17 +64,17 @@ class platos
         return $R;
     }
 
-   public function platosPrecio( int $idplato, int $idtam, int $idsector, string $hora)
+   public function platosPrecio( int $idPlato, int $idTam, int $idSector, string $Hora)
    {
-        if (!isset($idplato) || !isset($idtam) || !isset($idsector) || !isset($hora)) {
+        if (!isset($idPlato) || !isset($idTam) || !isset($idSector) || !isset($Hora)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_PlatoPrecio", [
-            "nplato" => $idplato,
-            "idtam" => $idtam,
-            "idsector" => $idsector,
-            "hora" => $hora
+            "nplato" => $idPlato,
+            "idtam" => $idTam,
+            "idsector" => $idSector,
+            "hora" => $Hora
         ],TRUE);
 
         if (!$R) {
@@ -85,14 +85,14 @@ class platos
         return $R;
     }
 
-   public function platoEnMesa( int $idplato)
+   public function platoEnMesa( int $idPlato)
    {
-        if (!isset($idplato)) {
+        if (!isset($idPlato)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_PlatoEnMesa", [
-            "idplato" => $idplato
+            "idplato" => $idPlato
         ],TRUE);
 
         if (!$R) {
@@ -103,14 +103,14 @@ class platos
         return $R;
    }
  
-   public function comboSec( int $idplato)
+   public function comboSec( int $idPlato)
    {
-        if (!isset($idplato)) {
+        if (!isset($idPlato)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_ComboSec", [
-            "idplato" => $idplato
+            "idplato" => $idPlato
         ],TRUE);
 
         if (!$R) {
@@ -121,14 +121,14 @@ class platos
         return $R;
    }
 
-   public function comboDet( int $idseccion)
+   public function comboDet( int $idSeccion)
    {
-        if (!isset($idseccion)) {
+        if (!isset($idSeccion)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_ComboDet", [
-            "idseccion" => $idseccion
+            "idseccion" => $idSeccion
         ],TRUE);
 
         if (!$R) {
@@ -152,14 +152,14 @@ class platos
         return $R;
    }
 
-   public function platoInfo( int $nroMesa, int $idDetalle, int $idPedido)
+   public function platoInfo( int $NroMesa, int $idDetalle, int $idPedido)
    {
-        if (!isset($nroMesa) || !isset($idDetalle) || !isset($idPedido)) {
+        if (!isset($NroMesa) || !isset($idDetalle) || !isset($idPedido)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_PlatoInfo", [
-            "nroMesa" => $nroMesa,
+            "nroMesa" => $NroMesa,
             "idDetalle" => $idDetalle,
             "idPedido" => $idPedido
         ],TRUE);
@@ -172,14 +172,14 @@ class platos
         return $R;
    }
 
-   public function platoInfoGustos(  int $nroMesa, int $idDetalle, int $idPedido)
+   public function platoInfoGustos(  int $NroMesa, int $idDetalle, int $idPedido)
    {
-        if (!isset($nroMesa) || !isset($idDetalle) || !isset($idPedido)) {
+        if (!isset($NroMesa) || !isset($idDetalle) || !isset($idPedido)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_PlatoInfoGustos", [
-            "nroMesa" => $nroMesa,
+            "nroMesa" => $NroMesa,
             "idDetalle" => $idDetalle,
             "idPedido" => $idPedido
         ],TRUE);
@@ -192,14 +192,14 @@ class platos
         return $R;
    }
 
-   public function platoInfoCombo(  int $nroMesa, int $idDetalle, int $idPedido)
+   public function platoInfoCombo(  int $NroMesa, int $idDetalle, int $idPedido)
    {
-        if (!isset($nroMesa) || !isset($idDetalle) || !isset($idPedido)) {
+        if (!isset($NroMesa) || !isset($idDetalle) || !isset($idPedido)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_PlatoInfoCombo", [
-            "nroMesa" => $nroMesa,
+            "nroMesa" => $NroMesa,
             "idDetalle" => $idDetalle,
             "idPedido" => $idPedido
         ],TRUE);
@@ -212,14 +212,14 @@ class platos
         return $R;
    }
   
-   public function platoInfoComboGustos(  int $nroMesa, int $idDetalle, int $idPedido)
+   public function platoInfoComboGustos(  int $NroMesa, int $idDetalle, int $idPedido)
    {
-        if (!isset($nroMesa) || !isset($idDetalle) || !isset($idPedido)) {
+        if (!isset($NroMesa) || !isset($idDetalle) || !isset($idPedido)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_PlatoInfoComboGustos", [
-            "nroMesa" => $nroMesa,
+            "nroMesa" => $NroMesa,
             "idDetalle" => $idDetalle,
             "idPedido" => $idPedido
         ],TRUE);

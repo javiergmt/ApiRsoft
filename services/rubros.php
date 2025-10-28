@@ -4,16 +4,16 @@ error_reporting(0);
 
 class rubros
 {
-   public function rubros( int $sucursal, int $favoritos, int $delivery)
+   public function rubros( int $Sucursal, int $Favoritos, int $Delivery)
    {
-        if (!isset($sucursal) || !isset($delivery) || !isset($favoritos)) {
+        if (!isset($Sucursal) || !isset($Delivery) || !isset($Favoritos)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_Rubros", [
-            "sucursal" => $sucursal,
-            "favoritos" => $favoritos,
-            "delivery" => $delivery
+            "sucursal" => $Sucursal,
+            "favoritos" => $Favoritos,
+            "delivery" => $Delivery
         ],TRUE);
 
         if (!$R) {

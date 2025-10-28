@@ -16,7 +16,7 @@ function db_connect()
             $usr = "sa";
             $pwd = "6736";
             $db = "RestobarW";
-            $host = ".\SQLEXPRESS";
+            $host = ".\SQLEXPRESS01";
             $DB = new PDO("sqlsrv:Server=$host;Database=$db", $usr, $pwd, array(
             PDO::SQLSRV_ATTR_DIRECT_QUERY => TRUE,
             PDO::ATTR_EMULATE_PREPARES => TRUE,
@@ -65,15 +65,22 @@ function dbExecSP(string $storeName, array $params = array(), $fetchAll = FALSE)
     }
     try {
         $stmt->execute(array_values($params));
+        
         if($stmt->columnCount() == 0) {
-            return null;
+            if ($stmt->rowCount() == 0) {   
+            $R = ["error" => "error al agregar registro"];
+            } else {
+            $R = ["mensaje" => "registro agregado"];
+            }
+            return $R;
         }
         $columnsInfo = $stmt->getColumnMeta(0);
         if ($fetchAll) {
             $R = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
         } else {    
             $R = $stmt->fetch(PDO::FETCH_ASSOC);
-
+            
             // si el SP devuelve un resultado con una sola columna y el nombre de la columna comienza con "JSON", se interpreta como un JSON
             if (count(array_keys($R)) == 1 && substr(@array_keys($R)[0], 0, 4) == "JSON") {
                 $R = json_decode(array_values($R)[0], TRUE);

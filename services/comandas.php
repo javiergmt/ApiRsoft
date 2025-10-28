@@ -17,17 +17,17 @@ class comandas
         return $R;
     }
 
-    public function grabarMensaje(string $descripcion, int $idMozo, int $idUsuario, int $nromesa)
+    public function grabarMensaje(string $Descripcion, int $idMozo, int $idUsuario, int $NroMesa)
     {
-        if (!$nromesa) {
+        if (!$NroMesa) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_GrabaMensaje", [
-            "descripcion" => $descripcion,
+            "descripcion" => $Descripcion,
             "idMozo" => $idMozo,
             "idUsuario" => $idUsuario,
-            "nromesa" => $nromesa
+            "nromesa" => $NroMesa
         ]);
 
         if (!$R) {

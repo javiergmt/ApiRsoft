@@ -24,15 +24,15 @@ class mesas
         return $R;
     }
 
-    public function mesas( int $count, int $idsector)
+    public function mesas( int $count, int $idSector)
     {
-        if (!$count || !$idsector) {
+        if (!$count || !$idSector) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_Mesas", [
             "count" => $count,
-            "idsector" => $idsector
+            "idsector" => $idSector
         ],TRUE);
 
         if (!$R) {
@@ -43,15 +43,15 @@ class mesas
         return $R;
     }
 
-    public function mesa( int $nromesa, int $sucursal)
+    public function mesa( int $NroMesa, int $Sucursal)
     {
-        if (!$nromesa || !$sucursal) {
+        if (!$NroMesa || !$Sucursal) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_Mesa", [
-            "nromesa" => $nromesa,
-            "sucursal" => $sucursal
+            "nromesa" => $NroMesa,
+            "sucursal" => $Sucursal
         ]);
 
         if (!$R) {
@@ -62,14 +62,14 @@ class mesas
         return $R;
     }
 
-    public function mesasMozo( int $idmozo)
+    public function mesasMozo( int $idMozo)
     {
-        if (!$idmozo) {
+        if (!$idMozo) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_MesasMozos", [
-            "idmozo" => $idmozo
+            "idmozo" => $idMozo
         ],TRUE);
 
         if (!$R) {
@@ -80,14 +80,14 @@ class mesas
         return $R;
     }
 
-    public function mesaEnc( int $nromesa)
+    public function mesaEnc( int $NroMesa)
     {
-        if (!$nromesa) {
+        if (!$NroMesa) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_MesaEnc", [
-            "nromesa" => $nromesa
+            "nromesa" => $NroMesa
         ]);
 
         if (!$R) {
@@ -98,16 +98,16 @@ class mesas
         return $R;
     }
 
-    public function mesaDet( int $nromesa,  int $agrupar, int $idpedido)
+    public function mesaDet( int $NroMesa,  int $agrupar, int $idPedido)
     {
-        if (!$nromesa ) {
+        if (!$NroMesa ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_MesaDet", [
-            "nromesa" => $nromesa,
+            "nromesa" => $NroMesa,
             "agrupar" => $agrupar,
-            "idpedido" => $idpedido
+            "idpedido" => $idPedido
         ],TRUE);
 
         if (!$R) {
@@ -122,7 +122,7 @@ class mesas
                 // Si es un consumo con gustos, traer los gustos
                 $gustos = '';
                 $G = dbExecSP("dbo.spG_MesaDetGustos", [
-                    "nromesa" => $nromesa,
+                    "nromesa" => $NroMesa,
                     "iddetalle" => $R[$key]['idDetalle']
                 ],TRUE);
  
@@ -136,7 +136,7 @@ class mesas
                 // Si es un combo, traer los platos del combo
                 $platosCombo = '';
                 $C = dbExecSP("dbo.spG_MesaDetCombos", [
-                    "nromesa" => $nromesa,
+                    "nromesa" => $NroMesa,
                     "iddetalle" => $R[$key]['idDetalle']
                 ],TRUE);
                 if ($C) {
@@ -153,14 +153,14 @@ class mesas
         return $R;
     }
   
-    public function mesaPagos( int $nromesa)
+    public function mesaPagos( int $NroMesa)
     {
-        if (!$nromesa) {
+        if (!$NroMesa) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_MesaPagos", [
-            "nromesa" => $nromesa
+            "nromesa" => $NroMesa
         ]);
 
         if (!$R) {
@@ -184,15 +184,15 @@ class mesas
         return $R;
     }
 
-    public function mesaBloquear( int $nromesa, int $idmozo)
+    public function mesaBloquear( int $NroMesa, int $idMozo)
     {
-        if (!$nromesa || !$idmozo) {
+        if (!$NroMesa || !$idMozo) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaBloquear", [
-            "nromesa" => $nromesa,
-            "idmozo" => $idmozo
+            "nromesa" => $NroMesa,
+            "idmozo" => $idMozo
         ]);
 
         if (!$R) {
@@ -203,14 +203,14 @@ class mesas
         return $R;
     }
 
-    public function mesaDesbloquear( int $nromesa)
+    public function mesaDesbloquear( int $NroMesa)
     {
-        if (!$nromesa) {
+        if (!$NroMesa) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaDesbloquear", [
-            "nromesa" => $nromesa
+            "nromesa" => $NroMesa
         ]);
 
         if (!$R) {
@@ -221,15 +221,15 @@ class mesas
         return $R;
     }
 
-    public function mesaAbrir( int $nromesa, int $idmozo)
+    public function mesaAbrir( int $NroMesa, int $idMozo)
     {
-        if (!$nromesa || !$idmozo) {
+        if (!$NroMesa || !$idMozo) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaAbrir", [
-            "nromesa" => $nromesa,
-            "idmozo" => $idmozo
+            "nromesa" => $NroMesa,
+            "idmozo" => $idMozo
         ]);
 
         if (!$R) {
@@ -240,34 +240,34 @@ class mesas
         return $R;
     }
 
-    public function mesaAddDet( int $nroMesa, int $idDetalle, int $idPlato, float $cant, float $pcioUnit,
-	float $importe, string $obs, int $idTamanio, string $Tamanio, bool $procesado, string $hora,
-	int $idMozo, int $idUsuario, bool $cocinado, bool $esEntrada, string $descripcion,
-	DateTime $fechaHora, bool $comanda)
+    public function mesaAddDet( int $NroMesa, int $idDetalle, int $idPlato, float $Cant, float $PcioUnit,
+	float $Importe, string $Obs, int $idTamanio, string $Tamanio, bool $Procesado, string $Hora,
+	int $idMozo, int $idUsuario, bool $Cocinado, bool $EsEntrada, string $Descripcion,
+	DateTime $FechaHora, bool $Comanda)
     {
-        if (!$nroMesa || !$idDetalle || !$idPlato || !$cant || !$pcioUnit || !$idTamanio || !$idMozo || !$idUsuario) {
+        if (!$NroMesa || !$idDetalle || !$idPlato || !$Cant || !$PcioUnit || !$idTamanio || !$idMozo || !$idUsuario) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaDet", [
-            "nromesa" => $nroMesa,
+            "nromesa" => $NroMesa,
             "iddetalle" => $idDetalle,
             "idplato" => $idPlato,
-            "cant" => $cant,
-            "pcioUnit" => $pcioUnit,
-            "importe" => $importe,
-            "obs" => $obs,
+            "cant" => $Cant,
+            "pcioUnit" => $PcioUnit,
+            "importe" => $Importe,
+            "obs" => $Obs,
             "idTamanio" => $idTamanio,
             "Tamanio" => $Tamanio,
-            "procesado" => $procesado,
-            "hora" => $hora,
+            "procesado" => $Procesado,
+            "hora" => $Hora,
             "idMozo" => $idMozo,
             "idUsuario" => $idUsuario,
-            "cocinado" => $cocinado,
-            "esEntrada" => $esEntrada,
-            "descripcion" => $descripcion,
-            "fechaHora" => $fechaHora,
-            "comanda" => $comanda
+            "cocinado" => $Cocinado,
+            "esEntrada" => $EsEntrada,
+            "descripcion" => $Descripcion,
+            "fechaHora" => $FechaHora,
+            "comanda" => $Comanda
         ]);
 
         if (!$R) {
@@ -278,16 +278,16 @@ class mesas
         return $R;
     }
 
-    public function mesaAddDetGustos( int $nroMesa, int $idDetalle, int $idGusto, string $descripcion)  {
-        if (!$nroMesa || !$idDetalle || !$idGusto) {
+    public function mesaAddDetGustos( int $NroMesa, int $idDetalle, int $idGusto, string $Descripcion)  {
+        if (!$NroMesa || !$idDetalle || !$idGusto) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaDetGustos", [
-            "nromesa" => $nroMesa,
+            "nromesa" => $NroMesa,
             "iddetalle" => $idDetalle,
             "idgusto" => $idGusto,
-            "descripcion" => $descripcion
+            "descripcion" => $Descripcion
         ]);
 
         if (!$R) {
@@ -298,26 +298,26 @@ class mesas
         return $R;
     }
 
-    public function mesaAddDetCombos( int $nroMesa, int $idDetalle, int $idSeccion, int $idPlato, float $cant,
-     bool $procesado, int $idTamanio, string $obs, bool $cocinado, string $descripcion, DateTime $fechaHora,
-     bool $comanda)  {
-        if (!$nroMesa || !$idDetalle || !$idSeccion || !$idPlato || !$cant ) {
+    public function mesaAddDetCombos( int $NroMesa, int $idDetalle, int $idSeccion, int $idPlato, float $Cant,
+     bool $Procesado, int $idTamanio, string $Obs, bool $Cocinado, string $Descripcion, DateTime $FechaHora,
+     bool $Comanda)  {
+        if (!$NroMesa || !$idDetalle || !$idSeccion || !$idPlato || !$Cant ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaDetCombos", [
-            "nromesa" => $nroMesa,
+            "nromesa" => $NroMesa,
             "iddetalle" => $idDetalle,
             "idseccion" => $idSeccion,
             "idplato" => $idPlato,
-            "cant" => $cant,
-            "procesado" => $procesado,
+            "cant" => $Cant,
+            "procesado" => $Procesado,
             "idtamanio" => $idTamanio,
-            "obs" => $obs,
-            "cocinado" => $cocinado,
-            "descripcion" => $descripcion,
-            "fechahora" => $fechaHora,
-            "comanda" => $comanda
+            "obs" => $Obs,
+            "cocinado" => $Cocinado,
+            "descripcion" => $Descripcion,
+            "fechahora" => $FechaHora,
+            "comanda" => $Comanda
         ]);
 
         if (!$R) {
@@ -328,13 +328,13 @@ class mesas
         return $R;
     }
 
-    public function mesaAddDetCombosGustos( int $nroMesa, int $idDetalle,int $idSeccion, int $idPlato, int $idGusto)  {
-        if (!$nroMesa || !$idDetalle || !$idGusto) {
+    public function mesaAddDetCombosGustos( int $NroMesa, int $idDetalle,int $idSeccion, int $idPlato, int $idGusto)  {
+        if (!$NroMesa || !$idDetalle || !$idGusto) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaDetCombosGustos", [
-            "nromesa" => $nroMesa,
+            "nromesa" => $NroMesa,
             "iddetalle" => $idDetalle,
             "idseccion" => $idSeccion,
             "idplato" => $idPlato,
@@ -349,14 +349,14 @@ class mesas
         return $R;
     }
 
-    public function mesaAddComensales( int $nroMesa, int $cant)  {
-        if (!$nroMesa || !$cant) {
+    public function mesaAddComensales( int $NroMesa, int $Cant)  {
+        if (!$NroMesa || !$Cant) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaComensales", [
-            "nromesa" => $nroMesa,
-            "cant" => $cant
+            "nromesa" => $NroMesa,
+            "cant" => $Cant
         ]);
 
         if (!$R) {
@@ -367,14 +367,14 @@ class mesas
         return $R;
     }
 
-    public function mesaBorrar( int $nromesa)
+    public function mesaBorrar( int $NroMesa)
     {
-        if (!$nromesa) {
+        if (!$NroMesa) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaBorrar", [
-            "nromesa" => $nromesa
+            "nromesa" => $NroMesa
         ]);
 
         if (!$R) {
@@ -385,37 +385,37 @@ class mesas
         return $R;
     }
     
-    public function mesaRenglonBorrar( int $nroMesa, int $idDetalle, int $idPlato, string $idTipoConsumo, float $cant,
-	string $descripcion,float $pcioUnit, string $obs, int $idTamanio, string $tamanio, DateTime $fecha, string $hora,
-	int $idMozo, int $idUsuario, DateTime $fechaHoraElin, int $idUsuarioElin, int $idMozoElim, int $idObs,
-    string $observacion, string $comentario, int $puntoDeVenta, int $idSeccion)
+    public function mesaRenglonBorrar( int $NroMesa, int $idDetalle, int $idPlato, string $idTipoConsumo, float $cant,
+	string $Descripcion,float $PcioUnit, string $Obs, int $idTamanio, string $Tamanio, DateTime $Fecha, string $Hora,
+	int $idMozo, int $idUsuario, DateTime $FechaHoraElin, int $idUsuarioElin, int $idMozoElim, int $idObs,
+    string $Observacion, string $Comentario, int $PuntoDeVenta, int $idSeccion)
     {
-        if (!$nroMesa || !$idDetalle || !$idPlato || !$cant || !$pcioUnit || !$idTamanio || !$idMozo || !$idUsuario) {
+        if (!$NroMesa || !$idDetalle || !$idPlato || !$cant || !$PcioUnit || !$idTamanio || !$idMozo || !$idUsuario) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spD_MesaRenglon", [
-            "nromesa" => $nroMesa,
+            "nromesa" => $NroMesa,
             "iddetalle" => $idDetalle,
             "idplato" => $idPlato,
             "idTipoConsumo" => $idTipoConsumo,
             "cant" => $cant,
-            "descripcion" => $descripcion,
-            "pcioUnit" => $pcioUnit,
-            "obs" => $obs,
+            "descripcion" => $Descripcion,
+            "pcioUnit" => $PcioUnit,
+            "obs" => $Obs,
             "idTamanio" => $idTamanio,
-            "tamanio" => $tamanio,
-            "fecha" => $fecha,
-            "hora" => $hora,
+            "tamanio" => $Tamanio,
+            "fecha" => $Fecha,
+            "hora" => $Hora,
             "idMozo" => $idMozo,
             "idUsuario" => $idUsuario,
-            "fechaHoraElin" => $fechaHoraElin,
+            "fechaHoraElin" => $FechaHoraElin,
             "idUsuarioElin" => $idUsuarioElin,
             "idMozoElim" => $idMozoElim,
             "idObs" => $idObs,
-            "observacion" => $observacion,
-            "comentario" => $comentario,
-            "puntoDeVenta" => $puntoDeVenta,
+            "observacion" => $Observacion,
+            "comentario" => $Comentario,
+            "puntoDeVenta" => $PuntoDeVenta,
             "idSeccion" => $idSeccion,
             "borrar" => 1 // Indica que se quiere borrar el renglón
         ]);
@@ -429,31 +429,31 @@ class mesas
     }
 
     
-    public function mesaCerrar( int $nroMesa, float $pagos, int $descTipo, float $descImporte, int $idCliente,
-    string $nombre, string $direccion,string $localidad, string $telefono, string $telefono2, string $telefono3, 
-    string $email, int $idZona, DateTime $fechaNac, string $idIva, string $cuit, string $tarjeta)  {
-        if (!$nroMesa || !$pagos) {
+    public function mesaCerrar( int $NroMesa, float $Pagos, int $DescTipo, float $DescImporte, int $idCliente,
+    string $Nombre, string $Direccion,string $Localidad, string $Telefono, string $telefono2, string $telefono3, 
+    string $Email, int $idZona, DateTime $FechaNac, string $idIva, string $CUIT, string $idTarjeta)  {
+        if (!$NroMesa || !$Pagos) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaCerrar", [
-            "nromesa" => $nroMesa,
-            "pagos" => $pagos,
-            "descTipo" => $descTipo,
-            "descImporte" => $descImporte,
+            "nromesa" => $NroMesa,
+            "pagos" => $Pagos,
+            "descTipo" => $DescTipo,
+            "descImporte" => $DescImporte,
             "idCliente" => $idCliente,
-            "nombre" => $nombre,
-            "direccion" => $direccion,
-            "localidad" => $localidad,
-            "telefono" => $telefono,
+            "nombre" => $Nombre,
+            "direccion" => $Direccion,
+            "localidad" => $Localidad,
+            "telefono" => $Telefono,
             "telefono2" => $telefono2,
             "telefono3" => $telefono3,
-            "email" => $email,
+            "email" => $Email,
             "idZona" => $idZona,
-            "fechaNac" => $fechaNac,
+            "fechaNac" => $FechaNac,
             "idIva" => $idIva,
-            "cuit" => $cuit,
-            "tarjeta" => $tarjeta
+            "cuit" => $CUIT,
+            "tarjeta" => $idTarjeta
         ]);
 
         if (!$R) {
@@ -465,14 +465,14 @@ class mesas
     }
 
     
-    public function mesaCerrarMozo( int $nromesa)
+    public function mesaCerrarMozo( int $NroMesa)
     {
-        if (!$nromesa) {
+        if (!$NroMesa) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaCerrarMozo", [
-            "nromesa" => $nromesa
+            "nromesa" => $NroMesa
         ]);
 
         if (!$R) {
@@ -483,16 +483,16 @@ class mesas
         return $R;
     }
 
-    public function mesaRenglonCambiar( int $nromesa, int $idDetalle, int $cant)
+    public function mesaRenglonCambiar( int $NroMesa, int $idDetalle, int $Cant)
     {
-        if (!$nromesa) {
+        if (!$NroMesa) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spP_MesaRenglonCambiar", [
-            "nromesa" => $nromesa,
+            "nromesa" => $NroMesa,
             "idDetalle" => $idDetalle,
-            "cant" => $cant
+            "cant" => $Cant
         ]);
 
         if (!$R) {
@@ -516,9 +516,9 @@ class mesas
         return $R;
     }
 
-    public function mesaObjetoPlanoCambiar( int $idObjeto, string $descripcion, int $forma, int $idSector,
-    string $color, string $penColor, int $brushStyle, int $penStyle, int $posTop, int $posLeft, int $width, 
-    int $height, bool $puntasRedondeadas)
+    public function mesaObjetoPlanoCambiar( int $idObjeto, string $Descripcion, int $Forma, int $idSector,
+    string $Color, string $PenColor, int $BrushStyle, int $PenStyle, int $PosTop, int $PosLeft, int $Width,
+    int $Height, bool $PuntasRedondeadas)
     {
         if (!$idObjeto) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -526,18 +526,18 @@ class mesas
 
         $R = dbExecSP("dbo.spP_ObjetoCambiar", [
             "idObjeto" => $idObjeto,
-            "descripcion" => $descripcion,
-            "forma" => $forma,
+            "descripcion" => $Descripcion,
+            "forma" => $Forma,
             "idSector" => $idSector,
-            "color" => $color,
-            "penColor" => $penColor,
-            "brushStyle" => $brushStyle,
-            "penStyle" => $penStyle,
-            "posTop" => $posTop,
-            "posLeft" => $posLeft,
-            "width" => $width,
-            "height" => $height,
-            "puntasRedondeadas" => $puntasRedondeadas
+            "color" => $Color,
+            "penColor" => $PenColor,
+            "brushStyle" => $BrushStyle,
+            "penStyle" => $PenStyle,
+            "posTop" => $PosTop,
+            "posLeft" => $PosLeft,
+            "width" => $Width,
+            "height" => $Height,
+            "puntasRedondeadas" => $PuntasRedondeadas
         ]);
 
         if (!$R) {
@@ -564,6 +564,30 @@ class mesas
 
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
+    }
+
+    public function mesaMultiDet( array $mesaDetM )
+    {
+        //if (!$det) {
+        //    throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        //}
+
+        $det = json_encode (array('mesaDetM' => $mesaDetM), true);
+        //echo var_dump($det);
+        
+        $R = dbExecSP("dbo.spP_MesaDetMulti", [
+            // convertir Json a string para pasarlo al SP
+            "det" => $det,
+            "tipo" => 'M'
+        ]);
+        
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+       
     }
 
 }

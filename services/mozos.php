@@ -38,7 +38,20 @@ class mozos
         return $R;
     }
 
-    
+    public function noticiasMozos()
+    {
+       
+        $R = dbExecSP("dbo.spG_NoticiasMozos", [
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
     
 }
 ?>

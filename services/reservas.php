@@ -18,16 +18,16 @@ class reservas
         return $R;
     }
 
-    public function reservas( string $fecha, string $fechaHasta ,int $idturno)
+    public function reservas( string $Fecha, string $FechaHasta ,int $idTurno)
     {
-        if (!$fecha || !$fechaHasta || !$idturno) {
+        if (!$Fecha || !$FechaHasta || !$idTurno) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
         $R = dbExecSP("dbo.spG_Reservas", [
-            "fecha" => $fecha,
-            "fechaHasta" => $fechaHasta,
-            "idturno" => $idturno
+            "fecha" => $Fecha,
+            "fechaHasta" => $FechaHasta,
+            "idturno" => $idTurno
         ],TRUE);
 
         if (!$R) {
