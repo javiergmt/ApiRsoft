@@ -47,6 +47,19 @@ class general
         return $R;
     }
 
+    public function condicionIva()
+    {
+        $R = dbExecSP("dbo.spG_CondicionIva", [],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+
     //------------------------------------------------------------------------------------------------------
 
     public function factElect()
@@ -78,7 +91,7 @@ class general
 
         $last_voucher = $afip->ElectronicBilling->GetLastVoucher($punto_de_venta, $tipo_de_comprobante);
 
-        echo "Ultimo comprobante: " . $last_voucher . "\n";
+        // echo "Ultimo comprobante: " . $last_voucher . "\n";
 
         // Devolver respuesta completa del web service
         $return_full_response = TRUE;

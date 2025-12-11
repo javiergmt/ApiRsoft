@@ -23,10 +23,12 @@ class reservas
         if (!$Fecha || !$FechaHasta || !$idTurno) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
-
+        $objeto_fecha = new DateTime($Fecha);
+        $objeto_fecha_hasta = new DateTime($FechaHasta);
+        
         $R = dbExecSP("dbo.spG_Reservas", [
-            "fecha" => $Fecha,
-            "fechaHasta" => $FechaHasta,
+            "fecha" => $objeto_fecha->format('Y/m/d'),
+            "fechaHasta" => $objeto_fecha_hasta->format('Y/m/d'),
             "idturno" => $idTurno
         ],TRUE);
 

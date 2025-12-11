@@ -2,21 +2,24 @@
 
 function db_connect()
 {
+    // Conexion a la base de datos
     global $DB;
     if ($DB) {
         //echo "Conexion ok!\n";
         return $DB;
     }
     try {
-    
 
-        $archivo = 'local.txt';
-
-        if (file_exists($archivo)) {
+        if (file_exists('local.txt') || file_exists('local17.txt')) {
             $usr = "sa";
             $pwd = "6736";
             $db = "RestobarW";
-            $host = ".\SQLEXPRESS01";
+            if ( file_exists('local.txt') ) {
+                $host = ".\SQLEXPRESS";
+            } else {
+                $host = ".\SQLEXPRESS01";
+            }
+            
             $DB = new PDO("sqlsrv:Server=$host;Database=$db", $usr, $pwd, array(
             PDO::SQLSRV_ATTR_DIRECT_QUERY => TRUE,
             PDO::ATTR_EMULATE_PREPARES => TRUE,
@@ -25,10 +28,19 @@ function db_connect()
             PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => TRUE
             ));
         } else {
-            $usuario = getUsuario();
-            $password = getPassword();
-            $db = getDb();
-            $DB = new PDO("sqlsrv:Server=172.30.1.39;MultipleActiveResultSets=0;TrustServerCertificate=1;Database=".$db, $usuario, $password, array(
+            // Si las variables de Session estan vacias
+            // Tomo los datos fijos de la base de datos General
+            // Sino, tomo los datos de la Session
+            if (!isset($_SESSION['logged']) || $_SESSION['logged'] === FALSE) {
+                $usuario = getUsuario();
+                $password = getPassword();
+                $db = getDb();
+            } else {
+                $usuario = $_SESSION['db_usuario'];
+                $password = $_SESSION['db_password'];
+                $db = $_SESSION['db_nombre'];
+            }
+            $DB = new PDO("sqlsrv:Server=172.31.9.3;MultipleActiveResultSets=0;TrustServerCertificate=1;Database=".$db, $usuario, $password, array(
             PDO::SQLSRV_ATTR_DIRECT_QUERY => TRUE,
             PDO::ATTR_EMULATE_PREPARES => TRUE,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -70,7 +82,7 @@ function dbExecSP(string $storeName, array $params = array(), $fetchAll = FALSE)
             if ($stmt->rowCount() == 0) {   
             $R = ["error" => "error al agregar registro"];
             } else {
-            $R = ["mensaje" => "registro agregado"];
+            $R = ["mensaje" => "registro agregado o actualizado"];
             }
             return $R;
         }

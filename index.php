@@ -4,6 +4,7 @@ $allowed_origins = [
     //'https://comercios.cooperativalaplata.com.ar',
     //'http://comercios2.cooperativalaplata.com.ar:5173',
 	'http://localhost:5173',
+    'http://rsoftlite.local',
     '*'
 ];
 
@@ -22,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-if (!file_exists('local.txt')) {
+if (!file_exists('local.txt') and !file_exists('local17.txt')) {
     session_set_cookie_params([
-        'lifetime' => 0,  // Session cookie will expire when the browser closes
+        'lifetime' => (3600*8), //Cookie will expire in 8 hours
         'path' => '/',
         //'domain' => 'yourdomain.com',
         'secure' => true,  // Only send cookie over HTTPS
@@ -112,12 +113,9 @@ try {
     // Auth    
     // inicia la session de PHP
     session_start();
-    if (!file_exists('local.txt')) {
-        if ( ($data['service'] == 'comercios' && $data['method'] == 'validarVendedor')
-            or ($data['service'] == 'comercios' && $data['method'] == 'validarCmUsuario')
-            or ($data['service'] == 'promotores' && $data['method'] == 'validarPrUsuario') 
-            or ($data['service'] == 'promotores' && $data['method'] == 'enviarMsg') 
-            or ($data['service'] == 'promotores' && $data['method'] == 'getLink') 
+    if (!file_exists('local.txt') and !file_exists('local17.txt')) {
+        if ( ($data['service'] == 'inicio' && $data['method'] == 'validarCliente')
+
         ){
             // Si el servicio es login y el metodo es checkUserPassword, no se requiere autenticacion
             // Se permite el acceso al login sin estar logueado

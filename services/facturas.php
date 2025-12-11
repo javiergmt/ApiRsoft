@@ -4,9 +4,9 @@ error_reporting(0);
 
 class facturas
 {
-    /*----*/
     public function facturaCrear( int $idPedido, int $NroMesa, bool $PagoEnMesa, int $fiscal, int $idRepartidor,
-    int $idObsDesc, int $idUsuario, int $idCliente, float $Total, int $TipoDesc, float $ImpDesc)
+    int $idObsDesc, int $idUsuario, int $idCliente, float $Total, int $TipoDesc, float $ImpDesc,
+    string $nombreClie, string $cuitClie, string $idIva)
     {
         if (!$NroMesa) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -23,7 +23,10 @@ class facturas
             "idCliente" => $idCliente,
             "total" => $Total,
             "tipodesc" => $TipoDesc,
-            "impdesc" => $ImpDesc
+            "impdesc" => $ImpDesc,
+            "nombreClie" => $nombreClie,
+            "cuitClie" => $cuitClie,
+            "ivaClie" => $idIva
         ]);
 
         if (!$R) {
@@ -34,8 +37,7 @@ class facturas
         return $R;
     }
 
-    /*----*/
-    public function facturaPagar( string $Nro, float $Importe,int $idCliente, int $idFormaDePago, 
+    public function facturaPagar( string $Nro, float $Importe,int $idCliente, int $idFormaPago, 
     int $idCupon, int $idMoneda, int $ImporteMoneda, float $Cotizacion, int $Billetes)
     {
         if (!$Nro) {
@@ -46,7 +48,7 @@ class facturas
             "nro" => $Nro,
             "importe" => $Importe,
             "idCliente" => $idCliente,
-            "idFormaDePago" => $idFormaDePago,
+            "idFormaPago" => $idFormaPago,
             "idCupon" => $idCupon,
             "idMoneda" => $idMoneda,
             "importeMoneda" => $ImporteMoneda,
@@ -62,35 +64,17 @@ class facturas
         return $R;
     }
 
-    /*----*/
-    public function clienteCambiar( int $idCliente, string $Nombre, string $Direccion, string $Localidad, string $Tel1,
-    string $Tel2, string $Tel3, string $Email, int $idZona, DateTime $FechaNac, int $idIva, string $Cuit, string $Tarj)
-    {
-        if (!$idCliente) {
-            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
-        }
 
-        $R = dbExecSP("dbo.spP_ClienteCambiar", [
-            "idCliente" => $idCliente,
-            "nombre" => $Nombre,
-            "direccion" => $Direccion,
-            "localidad" => $Localidad,
-            "tel1" => $Tel1,
-            "tel2" => $Tel2,
-            "tel3" => $Tel3,
-            "email" => $Email,
-            "idZona" => $idZona,
-            "fechaNac" => $FechaNac,
-            "idIva" => $idIva,
-            "cuit" => $Cuit,
-            "tarj" => $Tarj
-        ]);
+    public function formasDePago()
+    {
+        $R = dbExecSP("dbo.spG_FormasDePago", [], TRUE);
 
         if (!$R) {
-            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
         }
 
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
+
     }
 }
