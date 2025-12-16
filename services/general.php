@@ -59,6 +59,18 @@ class general
         return $R;
     }
 
+    public function obsDesc()
+    {
+        $R = dbExecSP("dbo.spG_ObsDesc", [],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
 
     //------------------------------------------------------------------------------------------------------
 
