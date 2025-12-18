@@ -677,9 +677,10 @@ class mesas
         return $R;
     }
 
-    public function mesaPago(int $NroMesa, float $importe, int $idMozo, int $idUsuario)
+    public function mesaPago(int $NroMesa, float $importe, int $idMozo, int $idUsuario, string $tipo, string $detalle="",
+                             int $idCliente,  string $nombreClie ="", string $cuitclie = "00-00000000-0")
     { 
-    if (!$NroMesa ) {
+        if (!$NroMesa ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
@@ -687,7 +688,12 @@ class mesas
             "nmesa" => $NroMesa,
             "importe" => $importe,
             "idMozo" => $idMozo,
-            "idUsuario" => $idUsuario
+            "idUsuario" => $idUsuario,
+            "tipo" => $tipo,
+            "detalle" => $detalle,
+            "idCliente" => $idCliente,
+            "nombreClie" => $nombreClie,
+            "cuitclie" => $cuitclie
         ]);
 
         if (!$R) {

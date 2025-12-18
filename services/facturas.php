@@ -170,5 +170,45 @@ class facturas
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }
+
+     public function facturaManual(int $NroMesa, float $importe, int $idMozo, int $idUsuario, string $tipo, string $detalle="",
+                             int $idCliente,  string $nombreClie ="", string $cuitClie = "00-00000000-0",
+                             int $idObsDesc=0, int $tipoDesc , float $impDesc=0.0, float $propina=0.0,
+                             int $fiscal=0, string $caeNro="", string $caeVto="", string $Nro="", string $NroCompAsoc="")
+    { 
+        if (!isset($NroMesa) ) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $objeto_caeVto = new DateTime($caeVto);
+
+        $R = dbExecSP("dbo.spP_FacturaManual", [
+            "nmesa" => $NroMesa,
+            "importe" => $importe,
+            "idMozo" => $idMozo,
+            "idUsuario" => $idUsuario,
+            "tipo" => $tipo,
+            "detalle" => $detalle,
+            "idCliente" => $idCliente,
+            "nombreClie" => $nombreClie,
+            "cuitClie" => $cuitClie,
+            "idObsDesc" => $idObsDesc,
+            "tipoDesc" => $tipoDesc,
+            "impDesc" => $impDesc,
+            "propina" => $propina,
+            "fiscal" => $fiscal,
+            "caeNro" => $caeNro,
+            "caeVto" => $objeto_caeVto->format('Y/m/d'),
+            "Nro" => $Nro,
+            "NroCompAsoc" => $NroCompAsoc
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
    
 }

@@ -6,7 +6,7 @@ error_reporting(0);
 class factElect
 {
 
-function facturaElectronica(string $crt,string $key,string $cuitEmisor,string $tipoIvaEmisor,string $ptoVta,string $clienteTipoIva,string $clienteCuit,
+function facturaElectronica(bool $homo,string $crt,string $key,string $cuitEmisor,string $tipoIvaEmisor,string $ptoVta,string $clienteTipoIva,string $clienteCuit,
     float $total, float $neto, float $iva,string $tipo,string $fecha,
     string $emisor , string $ingresosBrutos, string $fechaInicioActividades, string $domicilio , string $razonSocial , string $nombreFantasia,
     string $clienteNombre , string $clienteDomicilio, array $detalle,
@@ -18,7 +18,7 @@ function facturaElectronica(string $crt,string $key,string $cuitEmisor,string $t
         $tipoComp = "NOTA DE CREDITO";
     }
         
-    $F =  $this->getFactElect($crt,$key,$cuitEmisor,$tipoIvaEmisor,$ptoVta,$clienteTipoIva,$clienteCuit,$total,$neto,$iva,$tipoComp,$compAsoc,$letraCompAsoc);
+    $F =  $this->getFactElect($homo,$crt,$key,$cuitEmisor,$tipoIvaEmisor,$ptoVta,$clienteTipoIva,$clienteCuit,$total,$neto,$iva,$tipoComp,$compAsoc,$letraCompAsoc);
 
     if ($F['Resultado'] != "A") {
         throw new Exception("Error al generar la factura electronica: " . $F['Resultado']);
@@ -175,12 +175,18 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
 
     //$pdf->SetXY( 188, 210 ); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 85, 8, 'Subtotal', 0, 0, 'L');
     //$pdf->SetXY( 188, 218 ); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 85, 8, 'Bonif', 0, 0, 'L');
-    $pdf->SetXY( 158, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "Subtotal: $", 0, 0, 'R');
-    $pdf->SetXY( 188, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  number_format($total,2,",","."), 0, 0, 'R');
-    $pdf->SetXY( 158, 234 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "Importe Otros Tributos: $", 0, 0, 'R');
-    $pdf->SetXY( 188, 234 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8, number_format($iva,2,",","."), 0, 0, 'R');
-    $pdf->SetXY( 158, 242 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "Importe Total: $", 0, 0, 'R');
-    $pdf->SetXY( 188, 242 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8, number_format($total,2,",","."), 0, 0, 'R');
+    if ($tipoIvaEmisor == "RI" ) { 
+        $pdf->SetXY( 158, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "Importe Neto: $", 0, 0, 'R');
+        $pdf->SetXY( 188, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  number_format($total,2,",","."), 0, 0, 'R');
+        $pdf->SetXY( 158, 234 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "Iva 21%: $", 0, 0, 'R');
+        $pdf->SetXY( 188, 234 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8, number_format($iva,2,",","."), 0, 0, 'R');
+        $pdf->SetXY( 158, 242 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "Importe Total: $", 0, 0, 'R');
+        $pdf->SetXY( 188, 242 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8, number_format($total,2,",","."), 0, 0, 'R');
+    } else {
+        $pdf->SetXY( 158, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "TOTAL: $", 0, 0, 'R');
+        $pdf->SetXY( 188, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  number_format($total,2,",","."), 0, 0, 'R');
+
+    }
 
     $pdf->SetXY( 158, 252 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 85, 8,  "CAE: ".$cae, 0, 0, 'L');
     $pdf->SetXY( 128, 258 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 85, 8,  "Fecha Vencimiento CAE: ".$vtoCae, 0, 0, 'L');
@@ -217,7 +223,7 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
     return $salida;
 }
 
-function getFactElect(string $crt,string $key,string $cuitEmisor,string $tipoIvaEmisor,string $ptoVta,string $clienteTipoIva,string $clienteCuit,
+function getFactElect(bool $homo, string $crt,string $key,string $cuitEmisor,string $tipoIvaEmisor,string $ptoVta,string $clienteTipoIva,string $clienteCuit,
     float $total, float $neto, float $iva , string $tipoComp, string $compAsoc, string $letraCompAsoc)
 {
 # Ejemplo de Uso de Interface COM con Web Services AFIP (PyAfipWs) para PHP
@@ -233,7 +239,7 @@ function getFactElect(string $crt,string $key,string $cuitEmisor,string $tipoIva
 # [COM_DOT_NET] 
 # extension=ext\php_com_dotnet.dll 
 
-$HOMO = false;   # homologación (testing / pruebas) o producción
+$HOMO = $homo;   # homologación (testing / pruebas) o producción
 $CACHE = "";    # directorio para archivos temporales (usar por defecto)
 
 try {

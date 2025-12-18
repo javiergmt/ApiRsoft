@@ -20,9 +20,9 @@ class clientes
 
       /*-- Falta el SP */
     public function clienteCambiar( int $idCliente, string $Nombre, string $Direccion, string $Localidad, string $Tel1,
-    string $Tel2, string $Tel3, string $Email, int $idZona, string $FechaNac, int $idIva, string $Cuit, string $Tarj)
+    string $Tel2, string $Tel3, string $Email, int $idZona, string $FechaNac, string $idIva, string $Cuit, string $Tarj)
     {
-        if (!$idCliente) {
+       if (!isset($idcliente) ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
