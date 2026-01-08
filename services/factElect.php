@@ -218,7 +218,12 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
     $clienteNombre = str_replace(" ", "_", $clienteNombre);
     // Convertir a mayusculas
     $clienteNombre = strtoupper($clienteNombre);
-    $salida = 'facturas/'.$clienteNombre.'_FE_'.$cuitEmisor.'_'.$letra.'_'.$puntoVta.'_'.$nroComp.'.pdf';
+    if (file_exists('local.txt')) {
+        $idCliente = 'Rs0001';
+    } else {
+        $idCliente = $_SESSION['idCliente'];
+    }
+    $salida = 'facturas/'.$idCliente.'/'.$clienteNombre.'_FE_'.$cuitEmisor.'_'.$letra.'_'.$puntoVta.'_'.$nroComp.'.pdf';
     $pdf->Output('F',$salida);
     return $salida;
 }

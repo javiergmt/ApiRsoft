@@ -100,7 +100,7 @@ class mesas
 
     public function mesaDet(int $NroMesa,  int $agrupar, int $idPedido)
     {
-        if (!$NroMesa) {
+        if (!$NroMesa && !$idPedido) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 

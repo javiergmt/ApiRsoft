@@ -77,7 +77,7 @@ function dbExecSP(string $storeName, array $params = array(), $fetchAll = FALSE)
     }
     try {
         $stmt->execute(array_values($params));
-        
+
         if($stmt->columnCount() == 0) {
             if ($stmt->rowCount() == 0) {   
             $R = ["error" => "error al agregar registro"];

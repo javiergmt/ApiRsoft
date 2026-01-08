@@ -6,9 +6,10 @@ class facturas
 {
     public function facturaCrear( int $idPedido, int $NroMesa, bool $PagoEnMesa, int $fiscal, int $idRepartidor,
     int $idObsDesc, int $idUsuario, int $idCliente, float $Total, int $TipoDesc, float $ImpDesc,
-    string $nombreClie, string $cuitClie, string $idIva)
+    string $nombreClie, string $cuitClie, string $ivaClie,
+    float $propina=0.0,string $caeNro="", string $caeVto="", string $Nro="", string $NroCompAsoc="")
     {
-        if (!$NroMesa) {
+        if (!$NroMesa && !$idPedido) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
@@ -26,7 +27,12 @@ class facturas
             "impdesc" => $ImpDesc,
             "nombreClie" => $nombreClie,
             "cuitClie" => $cuitClie,
-            "ivaClie" => $idIva
+            "ivaClie" => $ivaClie,
+            "propina" => $propina,
+            "caeNro" => $caeNro,
+            "caeVto" => $caeVto,
+            "Nro" => $Nro,
+            "NroCompAsoc" => $NroCompAsoc
         ]);
 
         if (!$R) {
@@ -105,7 +111,7 @@ class facturas
     }
 
     public function comprobantes( string $FechaD, string $FechaH, string $TiposComp, 
-                                  string $VerAnul, int $PtoVta, int $Todo)
+                                  string $VerAnul, int $PtoVta, int $Todo, int $idCierre)
     {
         if (!$FechaD || !$FechaH) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -120,7 +126,8 @@ class facturas
             "TiposComp" => $TiposComp,
             "VerAnul" => $VerAnul,
             "PtoVta" => $PtoVta,
-            "Todo" => $Todo            
+            "Todo" => $Todo,
+            "idCierre" => $idCierre            
         ],TRUE);
 
         if (!$R) {
@@ -173,8 +180,8 @@ class facturas
 
      public function facturaManual(int $NroMesa, float $importe, int $idMozo, int $idUsuario, string $tipo, string $detalle="",
                              int $idCliente,  string $nombreClie ="", string $cuitClie = "00-00000000-0",
-                             int $idObsDesc=0, int $tipoDesc , float $impDesc=0.0, float $propina=0.0,
-                             int $fiscal=0, string $caeNro="", string $caeVto="", string $Nro="", string $NroCompAsoc="")
+                             int $idObsDesc=0, int $tipoDesc , float $impDesc=0.0, $fiscal=0,
+                             float $propina=0.0,string $caeNro="", string $caeVto="", string $Nro="", string $NroCompAsoc="")
     { 
         if (!isset($NroMesa) ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}

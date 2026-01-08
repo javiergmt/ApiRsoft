@@ -28,6 +28,8 @@ class inicio
                $_SESSION['db_password'] = Trim($R['db_password']);
                $_SESSION['db_nombre'] = Trim($R['db_nombre']);
                $_SESSION['logged'] = TRUE; 
+               // Completar con 0 a izquierda el idCliente a 4 dígitos
+               $_SESSION['idCliente'] = 'Rs'.str_pad(Trim($R['idCliente']), 4, "0", STR_PAD_LEFT);
                $R = [
                  "Ok" => TRUE
                 ];
