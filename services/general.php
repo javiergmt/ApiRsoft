@@ -83,6 +83,24 @@ class general
         return $R;
     }
 
+    public function getTabla(string $tabla)
+    {
+        if (!$tabla) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $R = dbExecSP("dbo.spG_TablaGen", [
+             "tableName" => $tabla
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
     //------------------------------------------------------------------------------------------------------
 
 }

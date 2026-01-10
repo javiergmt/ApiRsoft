@@ -44,7 +44,7 @@ class facturas
     }
 
     public function facturaPagar( string $Nro, float $Importe,int $idCliente, int $idFormaPago, 
-    int $idCupon, int $idMoneda, int $ImporteMoneda, float $Cotizacion, int $Billetes)
+     int $idTarjeta,int $idMoneda, int $ImporteMoneda, float $Cotizacion, int $Billetes)
     {
         if (!$Nro) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -55,7 +55,7 @@ class facturas
             "importe" => $Importe,
             "idCliente" => $idCliente,
             "idFormaPago" => $idFormaPago,
-            "idCupon" => $idCupon,
+            "idTarjeta" => $idTarjeta,
             "idMoneda" => $idMoneda,
             "importeMoneda" => $ImporteMoneda,
             "cotizacion" => $Cotizacion,
