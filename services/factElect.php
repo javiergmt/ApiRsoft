@@ -584,12 +584,12 @@ $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
 try {
     // Configuración del servidor SMTP
     $mail->isSMTP();
-    $mail->Host = 'mail.restosoft.com.ar'; // Tu servidor SMTP
+    $mail->Host = 'mail.restosoft.com.ar'; // servidor SMTP
     $mail->SMTPAuth = true;
-    $mail->Username = 'admin@restosoft.com.ar'; // Tu usuario SMTP
-    $mail->Password = 'Rest0.s0ft'; // Tu contraseña SMTP
+    $mail->Username = 'admin@restosoft.com.ar'; // usuario SMTP
+    $mail->Password = 'Rest0.s0ft'; // contraseña SMTP
     $mail->SMTPSecure = "ssl";
-    $mail->Port = 465; // O el puerto de tu servidor SMTP
+    $mail->Port = 465; // O el puerto de servidor SMTP
 
     // Destinatarios
     $mail->setFrom('admin@restosoft.com.ar', 'RestoSoft Administracion');
@@ -601,6 +601,14 @@ try {
     $mail->isHTML(true);
     $mail->Subject = $asunto;
     $mail->Body    = $cuerpo;
+
+    $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+      );
 
     $mail->send();
     //echo 'El mensaje se ha enviado';

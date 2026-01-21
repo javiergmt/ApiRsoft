@@ -17,20 +17,17 @@ class general
     }
 
 
-    public function usuariosPass( string $pass)
+    public function usuariosPass()
     {
-        if (!$pass) {
-            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
-        }
-    
+        
         $R = dbExecSP("dbo.spG_usuariosPass", [
-            "pass" => $pass
+            "pass" => "/SÄò"
         ]);
 
         if (!$R) {
             throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
         }
-
+        
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }
