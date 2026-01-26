@@ -119,4 +119,25 @@ class informes
         return $R;
     }
 
+    public function infCajasCerradas(string $fDesde, string $fHasta, int $Todo)
+    {
+        if (!$fDesde || !$fHasta || !$Todo ) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+        $objeto_fecha_desde = new DateTime($fDesde);
+        $objeto_fecha_hasta = new DateTime($fHasta);
+        $R = dbExecSP("dbo.spG_InfCajasCerradas", [
+            "FechaDesde" => $objeto_fecha_desde->format('Y/m/d'),
+            "FechaHasta" => $objeto_fecha_hasta->format('Y/m/d'),
+            "Todo" => $Todo
+        ],TRUE);   
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
 }

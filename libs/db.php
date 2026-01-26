@@ -10,7 +10,7 @@ function db_connect()
     }
     try {
 
-        if (file_exists('local.txt') || file_exists('local17.txt')) {
+        if (file_exists('local.txt') || file_exists('local19.txt')) {
             $usr = "sa";
             $pwd = "6736";
             $db = "RestobarW";
@@ -40,11 +40,13 @@ function db_connect()
                 $password = $_SESSION['db_password'];
                 $db = $_SESSION['db_nombre'];
             }
-            $DB = new PDO("sqlsrv:Server=172.31.9.3;MultipleActiveResultSets=0;TrustServerCertificate=1;Database=".$db, $usuario, $password, array(
+            $host =  getHost();
+            //$host = "172.31.9.3";
+            $DB = new PDO("sqlsrv:Server=".$host.";MultipleActiveResultSets=0;TrustServerCertificate=1;Database=".$db, $usuario, $password, array(
             PDO::SQLSRV_ATTR_DIRECT_QUERY => TRUE,
             PDO::ATTR_EMULATE_PREPARES => TRUE,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_STRINGIFY_FETCHES => FALSE,
+            //PDO::ATTR_STRINGIFY_FETCHES => FALSE,
             PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => TRUE
             ));
         }

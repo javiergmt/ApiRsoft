@@ -21,7 +21,7 @@ class general
     {
         
         $R = dbExecSP("dbo.spG_usuariosPass", [
-            "pass" => "/SÄò"
+            "pass" => $_SESSION['pass']
         ]);
 
         if (!$R) {

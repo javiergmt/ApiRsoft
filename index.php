@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-if (!file_exists('local.txt') and !file_exists('local17.txt')) {
+if (!file_exists('local.txt') and !file_exists('local19.txt')) {
     session_set_cookie_params([
         'lifetime' => (3600*8), //Cookie will expire in 8 hours
         'path' => '/',
@@ -118,7 +118,7 @@ try {
     // Auth    
     // inicia la session de PHP
     session_start();
-    if (!file_exists('local.txt') and !file_exists('local17.txt')) {
+    if (!file_exists('local.txt') and !file_exists('local19.txt')) {
         if ( ($data['service'] == 'inicio' && $data['method'] == 'validarCliente')
 
         ){
