@@ -103,7 +103,7 @@ class pedidos
     public function pedidos( int $idRepartidor, string $FechaDesde, string $FechaHasta, int $Cobrado,
     int $noPedidosCerrados, int $PtoVta)
     {
-        if (!$idRepartidor || !$FechaDesde || !$FechaHasta) {
+        if (!isset($idRepartidor) || !$FechaDesde || !$FechaHasta) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 

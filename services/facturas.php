@@ -70,6 +70,49 @@ class facturas
         return $R;
     }
 
+    public function facturaPagoCambiar( int $idRecibo, int $idDetalle, int $idFormaPago, 
+     int $idTarjeta,int $idMoneda, int $ImporteMoneda, float $Cotizacion, int $Billetes)
+    {
+        if (!$idRecibo || !$idDetalle) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $R = dbExecSP("dbo.spP_FacturaPagoCambiar", [
+            "idRecibo" => $idRecibo,
+            "idDetalle" => $idDetalle,
+            "idFormaPago" => $idFormaPago,
+            "idTarjeta" => $idTarjeta,
+            "idMoneda" => $idMoneda,
+            "importeMoneda" => $ImporteMoneda,
+            "cotizacion" => $Cotizacion,
+            "billetes" => $Billetes
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function facturaPagoBorrar( int $idRecibo)
+    {
+        if (!$idRecibo ) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $R = dbExecSP("dbo.spP_FacturaPagoBorrar", [
+            "idRecibo" => $idRecibo
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
 
     public function formasDePago()
     {
@@ -236,6 +279,31 @@ class facturas
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }
+
+     public function entradasSalidas( string $FechaD, string $FechaH, int $PtoVta,  int $idCierre)
+    {
+        if (!$FechaD || !$FechaH) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $objeto_fecha_desde = new DateTime($FechaD);
+        $objeto_fecha_hasta = new DateTime($FechaH);
+
+        $R = dbExecSP("dbo.spG_EntradasSalidas", [
+            "FechaD" => $objeto_fecha_desde->format('Y/m/d'),
+            "FechaH" => $objeto_fecha_hasta->format('Y/m/d'),
+            "PtoVta" => $PtoVta,
+            "idCierre" => $idCierre            
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
    
    
 }

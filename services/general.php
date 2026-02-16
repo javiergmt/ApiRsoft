@@ -17,11 +17,11 @@ class general
     }
 
 
-    public function usuariosPass()
+    public function usuariosPass(string $pass)
     {
         
         $R = dbExecSP("dbo.spG_usuariosPass", [
-            "pass" => $_SESSION['pass']
+            "pass" => $pass
         ]);
 
         if (!$R) {
@@ -98,6 +98,63 @@ class general
         return $R;
     }
 
+    public function actualizarCampo(string $tabla, string $campo, string $valor, 
+                    string $campoCondicion, string $valorCondicion, int $borrar)
+    {
+        if (!$tabla || !$campo || !$valor) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+       if ($campoCondicion <> "NULL" && $valorCondicion <> "NULL") {
+             $R = dbExecSP("dbo.spP_ActualizarCampo", [
+            "Tabla" => $tabla,
+            "Campo" => $campo,
+            "Valor" => $valor,
+            "CampoCondicion" => $campoCondicion,
+            "ValorCondicion" => $valorCondicion,
+            "Borrar" => $borrar
+            ]);
+         } else {
+                 $R = dbExecSP("dbo.spP_ActualizarCampo", [
+                "Tabla" => $tabla,
+                "Campo" => $campo,
+                "Valor" => $valor
+          ]);
+         }
+     
+        
+        
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+        
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+     public function insertarDesdeJson(string $tabla ,array $jsonData)
+    {
+        if (!$tabla || !$jsonData) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        // convetir [JsonData] => {"Data":[{"idClima":"5","Descripcion":"Lluvioso"},{"idClima":"6","Descripcion":"Nublado"}]} a [{"idClima":"5","Descripcion":"Lluvioso"},{"idClima":"6","Descripcion":"Nublado"}]
+        $jsonData = json_encode(array($jsonData),true);
+        $jsonData = substr($jsonData, 1, strlen($jsonData) - 2);
+
+        $R = dbExecSP("dbo.spP_InsertarDesdeJson", [
+            "Tabla" => $tabla,
+            "JsonData" => $jsonData
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
     //------------------------------------------------------------------------------------------------------
 
 }

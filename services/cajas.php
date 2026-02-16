@@ -90,4 +90,34 @@ class cajas
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }
+
+     public function cajaTira( int $idCierre )
+    {
+        if (!$idCierre) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $R = dbExecSP("dbo.spG_CajaTira", [
+            "idCierre" => $idCierre
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function paramCaja()
+    {
+        $R = dbExecSP("dbo.spG_ParamCaja", [],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
 }

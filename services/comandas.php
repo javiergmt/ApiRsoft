@@ -37,4 +37,6 @@ class comandas
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }
+
+
 }
