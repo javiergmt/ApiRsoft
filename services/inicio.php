@@ -7,7 +7,7 @@ class inicio
     // Metodo para validar cliente
     public function validarCliente(string $cliente, string $usuario, string $pass )   
     {
-        if (!$cliente and strlen($cliente) < 50) {
+        if (!$cliente ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 

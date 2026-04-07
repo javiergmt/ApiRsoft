@@ -223,7 +223,7 @@ class facturas
 
      public function facturaManual(int $NroMesa, float $importe, int $idMozo, int $idUsuario, string $tipo, string $detalle="",
                              int $idCliente,  string $nombreClie ="", string $cuitClie = "00-00000000-0",
-                             int $idObsDesc=0, int $tipoDesc , float $impDesc=0.0, $fiscal=0,
+                             int $idObsDesc=0, int $tipoDesc , float $impDesc=0.0, int $fiscal=0,
                              float $propina=0.0,string $caeNro="", string $caeVto="", string $Nro="", string $NroCompAsoc="")
     { 
         if (!isset($NroMesa) ) {

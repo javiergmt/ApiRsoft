@@ -122,9 +122,6 @@ class general
           ]);
          }
      
-        
-        
-
         if (!$R) {
             throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
         }
@@ -133,7 +130,39 @@ class general
         return $R;
     }
 
-     public function insertarDesdeJson(string $tabla ,array $jsonData)
+    public function actualizarCamposMultiples(string $tabla, string $jsonData, 
+                    string $campoCondicion, string $valorCondicion)
+    {
+        if (!$tabla || !$jsonData) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $jsonData = json_encode(array($jsonData),true);
+        $jsonData = substr($jsonData, 1, strlen($jsonData) - 2);
+        echo $jsonData;
+        if ($campoCondicion <> "NULL" && $valorCondicion <> "NULL") {
+             $R = dbExecSP("dbo.spP_ActualizarCamposMultiples", [
+                "Tabla" => $tabla,
+                "JsonCampos" => $jsonData,
+                "CampoCondicion" => $campoCondicion,
+                "ValorCondicion" => $valorCondicion
+            ]);
+         } else {
+                 $R = dbExecSP("dbo.spP_ActualizarCamposMultiples", [
+                "Tabla" => $tabla,
+                "JsonCampos" => $jsonData
+          ]);
+        }
+     
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+        
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function insertarDesdeJson(string $tabla ,array $jsonData)
     {
         if (!$tabla || !$jsonData) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -142,7 +171,7 @@ class general
         // convetir [JsonData] => {"Data":[{"idClima":"5","Descripcion":"Lluvioso"},{"idClima":"6","Descripcion":"Nublado"}]} a [{"idClima":"5","Descripcion":"Lluvioso"},{"idClima":"6","Descripcion":"Nublado"}]
         $jsonData = json_encode(array($jsonData),true);
         $jsonData = substr($jsonData, 1, strlen($jsonData) - 2);
-
+       
         $R = dbExecSP("dbo.spP_InsertarDesdeJson", [
             "Tabla" => $tabla,
             "JsonData" => $jsonData
