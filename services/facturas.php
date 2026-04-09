@@ -13,6 +13,8 @@ class facturas
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
+            $objeto_caeVto = new DateTime($caeVto);
+
         $R = dbExecSP("dbo.spP_FacturaCrear", [
             "idPedido" => $idPedido,
             "nromesa" => $NroMesa,
@@ -30,7 +32,7 @@ class facturas
             "ivaClie" => $ivaClie,
             "propina" => $propina,
             "caeNro" => $caeNro,
-            "caeVto" => $caeVto,
+            "caeVto" => $objeto_caeVto->format('Y/m/d'),
             "Nro" => $Nro,
             "NroCompAsoc" => $NroCompAsoc
         ]);
@@ -280,30 +282,7 @@ class facturas
         return $R;
     }
 
-     public function entradasSalidas( string $FechaD, string $FechaH, int $PtoVta,  int $idCierre)
-    {
-        if (!$FechaD || !$FechaH) {
-            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
-        }
-
-        $objeto_fecha_desde = new DateTime($FechaD);
-        $objeto_fecha_hasta = new DateTime($FechaH);
-
-        $R = dbExecSP("dbo.spG_EntradasSalidas", [
-            "FechaD" => $objeto_fecha_desde->format('Y/m/d'),
-            "FechaH" => $objeto_fecha_hasta->format('Y/m/d'),
-            "PtoVta" => $PtoVta,
-            "idCierre" => $idCierre            
-        ],TRUE);
-
-        if (!$R) {
-            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
-        }
-
-        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
-        return $R;
-    }
-
+    
    
    
 }

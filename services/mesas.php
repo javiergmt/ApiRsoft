@@ -257,12 +257,15 @@ class mesas
         bool $Cocinado,
         bool $EsEntrada,
         string $Descripcion,
-        DateTime $FechaHora,
+        string $FechaHora,
         bool $Comanda
     ) {
         if (!$NroMesa || !$idDetalle || !$idPlato || !$Cant || !$PcioUnit || !$idTamanio || !$idMozo || !$idUsuario) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
+
+        $objeto_fecha = new DateTime($FechaHora);
+        $FechaHora = $objeto_fecha->format('Y/m/d');
 
         $R = dbExecSP("dbo.spP_MesaDet", [
             "nromesa" => $NroMesa,
@@ -324,14 +327,15 @@ class mesas
         int $idTamanio,
         string $Obs,
         bool $Cocinado,
-        string $Descripcion,
-        DateTime $FechaHora,
+        string $FechaHora,
         bool $Comanda
     ) {
         if (!$NroMesa || !$idDetalle || !$idSeccion || !$idPlato || !$Cant) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
+        $objeto_fecha = new DateTime($FechaHora);
+        $FechaHora = $objeto_fecha->format('Y/m/d');
         $R = dbExecSP("dbo.spP_MesaDetCombos", [
             "nromesa" => $NroMesa,
             "iddetalle" => $idDetalle,
@@ -342,7 +346,7 @@ class mesas
             "idtamanio" => $idTamanio,
             "obs" => $Obs,
             "cocinado" => $Cocinado,
-            "descripcion" => $Descripcion,
+            //"descripcion" => $Descripcion,
             "fechahora" => $FechaHora,
             "comanda" => $Comanda
         ]);

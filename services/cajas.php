@@ -120,4 +120,58 @@ class cajas
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }
+
+    public function entradasSalidas( string $FechaD, string $FechaH, int $PtoVta,  int $idCierre)
+    {
+        if (!$FechaD || !$FechaH) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $objeto_fecha_desde = new DateTime($FechaD);
+        $objeto_fecha_hasta = new DateTime($FechaH);
+
+        $R = dbExecSP("dbo.spG_EntradasSalidas", [
+            "FechaD" => $objeto_fecha_desde->format('Y/m/d'),
+            "FechaH" => $objeto_fecha_hasta->format('Y/m/d'),
+            "PtoVta" => $PtoVta,
+            "idCierre" => $idCierre            
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function addEntadaSalida( string $Fecha, string $Hora, string $Movimiento, string $Concepto, float $Monto, 
+                                      int $idCierre, int $idCuentaGastos, int $PuntoDeVenta, int $idUsuario )
+    {
+        if (!$Fecha || !$Hora || !$Movimiento || !$Concepto || !$Monto || !$idCuentaGastos || !$PuntoDeVenta || !$idUsuario) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $objeto_fecha = new DateTime($Fecha);
+
+        $R = dbExecSP("dbo.spP_EntradaSalida", [
+            "Fecha" => $objeto_fecha->format('Y/m/d'),
+            "Hora" => $Hora,
+            "Movimiento" => $Movimiento,
+            "Concepto" => $Concepto,
+            "Monto" => $Monto,
+            "idCierre" => $idCierre,
+            "idCuentaGastos" => $idCuentaGastos,
+            "PuntoDeVenta" => $PuntoDeVenta,
+            "idUsuario" => $idUsuario
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
 }
