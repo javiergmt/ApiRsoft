@@ -95,7 +95,8 @@ try {
             throw new Exception("Datos invalidos en el body del request");
         }
         $data = @json_decode($bodyData, TRUE);
-          // cualquier otro caso, uso el body del request que es un form-urlencoded o multipart/form-data
+        
+        // cualquier otro caso, uso el body del request que es un form-urlencoded o multipart/form-data
     } elseif (isset($_POST) && count($_POST)) {
         $data = $_POST;
     }

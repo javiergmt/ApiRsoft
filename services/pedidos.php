@@ -6,8 +6,8 @@ class pedidos
 {
     public function pedidoNuevo( int $idPedido, string $Fecha, string $Hora, int $idCliente, string $FechaEntrega, string $HoraEntrega,
     float $Subtotal, float $Descuento, float $Total, float $Envio, float $Pago, float $Pagacon, string $Obs,
-    int $idRepartidor, string $NombreClie, string $DireccionClie, bool $EnUso, bool $Cobrado, bool $xMostrador,
-    int $idUsuario, int $PuntoDeVenta, bool $Delivery, int $tipoDesc, int $descRec, string $telefonoClie)
+    int $idRepartidor, string $NombreClie, string $DireccionClie, bool $EnUso, bool $Cobrado, bool $XMostrador,
+    int $idUsuario, int $PuntoDeVenta, bool $Delivery, int $tipoDesc, int $descRec, string $TelefonoClie)
     {
         if ($idPedido === null || $idPedido < 0) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -42,13 +42,13 @@ class pedidos
             "DireccionClie" => $DireccionClie,
             "EnUso" => $EnUso,
             "Cobrado" => $Cobrado,
-            "xMostrador" => $xMostrador,
+            "XMostrador" => $XMostrador,
             "idUsuario" => $idUsuario,
             "PuntoDeVenta" => $PuntoDeVenta,
             "Delivery" => $Delivery,
             "tipoDesc" => $tipoDesc,
             "descRec" => $descRec,
-            "telefonoClie" => $telefonoClie
+            "TelefonoClie" => $TelefonoClie
 
         ]);
 
@@ -169,7 +169,7 @@ class pedidos
 
     public function pedidoEntregado( int $idPedido, int $idRepartidor  )
     {
-        if (!$idPedido || !$idRepartidor) {
+        if (!$idPedido ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 

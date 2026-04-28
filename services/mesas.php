@@ -260,7 +260,7 @@ class mesas
         string $FechaHora,
         bool $Comanda
     ) {
-        if (!$NroMesa || !$idDetalle || !$idPlato || !$Cant || !$PcioUnit || !$idTamanio || !$idMozo || !$idUsuario) {
+        if (!$NroMesa || !$idDetalle ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
@@ -423,7 +423,7 @@ class mesas
         int $idDetalle,
         int $idPlato,
         string $idTipoConsumo,
-        float $cant,
+        float $Cant,
         string $Descripcion,
         float $PcioUnit,
         string $Obs,
@@ -434,7 +434,7 @@ class mesas
         int $idMozo,
         int $idUsuario,
         string $FechaHoraElim,
-        int $idUsuarioElin,
+        int $idUsuarioElim,
         int $idMozoElim,
         int $idObs,
         string $Observacion,
@@ -442,7 +442,7 @@ class mesas
         int $PuntoDeVenta,
         int $idSeccion
     ) {
-        if (!$NroMesa || !$idDetalle || !$idPlato || !$cant || !$PcioUnit || !$idTamanio || !$idMozo || !$idUsuario) {
+        if (!$NroMesa || !$idDetalle || !$idPlato || !$Cant ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
@@ -454,7 +454,7 @@ class mesas
             "iddetalle" => $idDetalle,
             "idplato" => $idPlato,
             "idTipoConsumo" => $idTipoConsumo,
-            "cant" => $cant,
+            "cant" => $Cant,
             "descripcion" => $Descripcion,
             "pcioUnit" => $PcioUnit,
             "obs" => $Obs,
@@ -464,15 +464,15 @@ class mesas
             "hora" => $Hora,
             "idMozo" => $idMozo,
             "idUsuario" => $idUsuario,
-            "fechaHoraElin" => $FechaHoraElim ? $objeto_fechaElim->format('Y/m/d') : null,
-            "idUsuarioElin" => $idUsuarioElin,
+            "fechaHoraElim" => $FechaHoraElim ? $objeto_fechaElim->format('Y/m/d') : null,
+            "idUsuarioElim" => $idUsuarioElim,
             "idMozoElim" => $idMozoElim,
             "idObs" => $idObs,
             "observacion" => $Observacion,
             "comentario" => $Comentario,
             "puntoDeVenta" => $PuntoDeVenta,
             "idSeccion" => $idSeccion,
-            "borrar" => 1 // Indica que se quiere borrar el renglón
+            //"borrar" => 1 // Indica que se quiere borrar el renglón
         ]);
 
         if (!$R) {

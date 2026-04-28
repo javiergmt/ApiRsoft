@@ -101,7 +101,7 @@ class general
     public function actualizarCampo(string $tabla, string $campo, string $valor, 
                     string $campoCondicion, string $valorCondicion, int $borrar)
     {
-        if (!$tabla || !$campo || !$valor) {
+        if (!$tabla || !$campo ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 

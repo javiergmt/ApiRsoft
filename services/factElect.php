@@ -218,7 +218,7 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
     $clienteNombre = str_replace(" ", "_", $clienteNombre);
     // Convertir a mayusculas
     $clienteNombre = strtoupper($clienteNombre);
-    if (file_exists('local.txt')) {
+    if (file_exists('local.txt') or file_exists('local19.txt')) {
         $idCliente = 'Rs0001';
     } else {
         $idCliente = $_SESSION['idCliente'];
