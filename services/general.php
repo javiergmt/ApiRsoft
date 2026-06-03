@@ -130,7 +130,7 @@ class general
         return $R;
     }
 
-    public function actualizarCamposMultiples(string $tabla, string $jsonData, 
+    public function actualizarCamposMultiples(string $tabla, array $jsonData, 
                     string $campoCondicion, string $valorCondicion)
     {
         if (!$tabla || !$jsonData) {
@@ -139,7 +139,7 @@ class general
 
         $jsonData = json_encode(array($jsonData),true);
         $jsonData = substr($jsonData, 1, strlen($jsonData) - 2);
-        echo $jsonData;
+        //echo $jsonData;
         if ($campoCondicion <> "NULL" && $valorCondicion <> "NULL") {
              $R = dbExecSP("dbo.spP_ActualizarCamposMultiples", [
                 "Tabla" => $tabla,
@@ -171,7 +171,7 @@ class general
         // convetir [JsonData] => {"Data":[{"idClima":"5","Descripcion":"Lluvioso"},{"idClima":"6","Descripcion":"Nublado"}]} a [{"idClima":"5","Descripcion":"Lluvioso"},{"idClima":"6","Descripcion":"Nublado"}]
         $jsonData = json_encode(array($jsonData),true);
         $jsonData = substr($jsonData, 1, strlen($jsonData) - 2);
-       
+        //echo $jsonData;
         $R = dbExecSP("dbo.spP_InsertarDesdeJson", [
             "Tabla" => $tabla,
             "JsonData" => $jsonData

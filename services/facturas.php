@@ -45,6 +45,28 @@ class facturas
         return $R;
     }
 
+public function notaCreditoCrear( string $Nro, string $nNro, string $Tipo)
+{
+        if (!$Nro || !$nNro || !$Tipo) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+            
+        $R = dbExecSP("dbo.spP_NCtoCrear", [
+            "Nro" => $Nro,
+            "nNro" => $nNro,
+            "Tipo" => $Tipo
+            
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
     public function facturaPagar( string $Nro, float $Importe,int $idCliente, int $idFormaPago, 
      int $idTarjeta,int $idMoneda, int $ImporteMoneda, float $Cotizacion, int $Billetes)
     {
