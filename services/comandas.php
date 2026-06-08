@@ -17,6 +17,32 @@ class comandas
         return $R;
     }
 
+    public function getParamComandas()
+    {
+      
+        $R = dbExecSP("dbo.spG_ParamComandas", [],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function getParamAceptacion()
+    {
+      
+        $R = dbExecSP("dbo.spG_ParamAcept", [],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
     public function grabarMensaje(string $Descripcion, int $idMozo, int $idUsuario, int $NroMesa)
     {
         if (!$NroMesa) {

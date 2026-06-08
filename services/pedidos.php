@@ -5,7 +5,7 @@ error_reporting(0);
 class pedidos
 {
     public function pedidoNuevo( int $idPedido, string $Fecha, string $Hora, int $idCliente, string $FechaEntrega, string $HoraEntrega,
-    float $Subtotal, float $Descuento, float $Total, float $Envio, float $Pago, float $Pagacon, string $Obs,
+    float $Subtotal, float $Descuento, float $Total, float $Envio, float $Pago, float $PagaCon, string $Obs,
     int $idRepartidor, string $NombreClie, string $DireccionClie, bool $EnUso, bool $Cobrado, bool $XMostrador,
     int $idUsuario, int $PuntoDeVenta, bool $Delivery, int $tipoDesc, int $descRec, string $TelefonoClie)
     {
@@ -35,7 +35,7 @@ class pedidos
             "Total" => $Total,
             "Envio" => $Envio,
             "Pago" => $Pago,
-            "Pagacon" => $Pagacon,
+            "PagaCon" => $PagaCon,
             "Obs" => $Obs,
             "idRepartidor" => $idRepartidor,
             "NombreClie" => $NombreClie,

@@ -244,4 +244,91 @@ class platos
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
    }
+
+   public function actualizarPreciosPlatos( array $jsonData)
+    {
+        if ( !$jsonData) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $jsonData = json_encode(array($jsonData),true);
+        $jsonData = substr($jsonData, 1, strlen($jsonData) - 2);
+        //echo $jsonData;
+        $R = dbExecSP("dbo.spP_ActualizarPreciosPlatos", [
+                "JsonPrecios" => $jsonData
+          ]);
+        
+     
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+        
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function actualizarPreciosPlatosTam( array $jsonData)
+    {
+        if ( !$jsonData) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $jsonData = json_encode(array($jsonData),true);
+        $jsonData = substr($jsonData, 1, strlen($jsonData) - 2);
+        //echo $jsonData;
+        $R = dbExecSP("dbo.spP_ActualizarPreciosPlatosTam", [
+                "JsonPrecios" => $jsonData
+          ]);
+        
+     
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+        
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function actualizarPreciosPlatosSect( array $jsonData)
+    {
+        if ( !$jsonData) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $jsonData = json_encode(array($jsonData),true);
+        $jsonData = substr($jsonData, 1, strlen($jsonData) - 2);
+        //echo $jsonData;
+        $R = dbExecSP("dbo.spP_ActualizarPreciosPlatosSect", [
+                "JsonPrecios" => $jsonData
+          ]);
+        
+     
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+        
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+     public function platosPreciosAct(  int $idRubro = -1 , int $idSector = -1) 
+   {
+        if (!isset($idRubro) || !isset($idSector)) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $R = dbExecSP("dbo.spG_PlatosPreciosAct", [
+            "idRubro" => $idRubro,
+            "idSector" => $idSector
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+   }
+
+
 }
