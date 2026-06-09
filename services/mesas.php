@@ -707,4 +707,25 @@ class mesas
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }
+
+    public function mesaDeFact(string $tipo, string $nro, int $nroMesa)
+    {
+        if (!$tipo || !$nro ) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $R = dbExecSP("dbo.spP_MesadeFact", [
+            "tipo" => $tipo,
+            "nro" => $nro,
+            "nroMesa" => $nroMesa
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
 }
