@@ -4,7 +4,7 @@ error_reporting(0);
 
 class cajas
 {
-    public function cajaResumen( string $Fecha, int $PtoVta)
+    public function cajaResumen( string $Fecha, int $PtoVta, int $todo, int $idCierre)
     {
         if (!$Fecha || !$PtoVta) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -14,7 +14,9 @@ class cajas
 
         $R = dbExecSP("dbo.spG_CajaResumen", [
             "Fecha" => $objeto_fecha->format('Y/m/d'),
-            "PtoVta" => $PtoVta           
+            "PtoVta" => $PtoVta,
+            "todo" => $todo,
+            "idCierre" => $idCierre           
         ],TRUE);
 
         if (!$R) {

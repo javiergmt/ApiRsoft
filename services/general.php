@@ -80,15 +80,22 @@ class general
         return $R;
     }
 
-    public function getTabla(string $tabla)
+    public function getTabla(string $tabla, string $campoCondicion = "NULL", string $valorCondicion = "NULL" )
     {
         if (!$tabla) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
-
-        $R = dbExecSP("dbo.spG_TablaGen", [
-             "tableName" => $tabla
-        ],TRUE);
+        if ($campoCondicion <> "NULL" && $valorCondicion <> "NULL") {
+            $R = dbExecSP("dbo.spG_TablaGen", [
+                "tableName" => $tabla,
+                "CampoCondicion" => $campoCondicion,
+                "ValorCondicion" => $valorCondicion
+            ],TRUE);
+        } else {    
+            $R = dbExecSP("dbo.spG_TablaGen", [
+                "tableName" => $tabla
+            ],TRUE);
+        }
 
         if (!$R) {
             throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
