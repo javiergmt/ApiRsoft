@@ -13,7 +13,7 @@ function db_connect()
         if (file_exists('local.txt') || file_exists('local19.txt')) {
             $usr = "sa";
             $pwd = "6736";
-            $db = "RestobarW";
+            $db = getDbLocal();
             if ( file_exists('local.txt') ) {
                 $host = ".\SQLEXPRESS";
             } else {

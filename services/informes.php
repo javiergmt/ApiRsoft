@@ -140,4 +140,95 @@ class informes
         return $R;
     }
 
+    public function infConsRubDetGral(string $FechaD, string $FechaH, string $Horad, string $Horah, int $todo, 
+    int $Ptovta, int $sector, int $turno, string $tipofe, int $Combos)
+    {
+        if (!$FechaD || !$FechaH  ) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+        $objeto_fecha_desde = new DateTime($FechaD);
+        $objeto_fecha_hasta = new DateTime($FechaH);
+        $R = dbExecSP("dbo.spG_ConsRubDet_Gral", [
+            "FechaD" => $objeto_fecha_desde->format('Y/m/d'),
+            "FechaH" => $objeto_fecha_hasta->format('Y/m/d'),
+            "HoraD" => $Horad,
+            "HoraH" => $Horah,
+            "todo" => $todo,
+            "PtoVta" => $Ptovta,
+            "sector" => $sector,
+            "turno" => $turno,
+            "tipoFe" => $tipofe,
+            "Combos" => $Combos
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function infConsRubDetRub(string $FechaD, string $FechaH, string $Horad, string $Horah, int $todo, 
+    int $Ptovta, int $sector, int $turno, string $tipofe, int $Combos, int $CodRub, int $CodSubRub)
+    {
+        if (!$FechaD || !$FechaH ) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+        $objeto_fecha_desde = new DateTime($FechaD);
+        $objeto_fecha_hasta = new DateTime($FechaH);
+        $R = dbExecSP("dbo.spG_ConsRubDet_Rub", [
+            "FechaD" => $objeto_fecha_desde->format('Y/m/d'),
+            "FechaH" => $objeto_fecha_hasta->format('Y/m/d'),
+            "HoraD" => $Horad,
+            "HoraH" => $Horah,
+            "todo" => $todo,
+            "PtoVta" => $Ptovta,
+            "sector" => $sector,
+            "turno" => $turno,
+            "tipoFe" => $tipofe,
+            "Combos" => $Combos,
+            "CodRub" => $CodRub,
+            "CodSubRub" => $CodSubRub
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+     public function infConsRubDetRubSub(string $FechaD, string $FechaH, string $Horad, string $Horah, int $todo, 
+    int $Ptovta, int $sector, int $turno, string $tipofe, int $Combos, int $CodRub, int $CodSubRub)
+    {
+        if (!$FechaD || !$FechaH ) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+        $objeto_fecha_desde = new DateTime($FechaD);
+        $objeto_fecha_hasta = new DateTime($FechaH);
+        $R = dbExecSP("dbo.spG_ConsRubDet_RubSub", [
+            "FechaD" => $objeto_fecha_desde->format('Y/m/d'),
+            "FechaH" => $objeto_fecha_hasta->format('Y/m/d'),
+            "HoraD" => $Horad,
+            "HoraH" => $Horah,
+            "todo" => $todo,
+            "PtoVta" => $Ptovta,
+            "sector" => $sector,
+            "turno" => $turno,
+            "tipoFe" => $tipofe,
+            "Combos" => $Combos,
+            "CodRub" => $CodRub,
+            "CodSubRub" => $CodSubRub
+        ],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
 }

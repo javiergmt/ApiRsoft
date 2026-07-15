@@ -106,28 +106,60 @@ class general
     }
 
     public function actualizarCampo(string $tabla, string $campo, string $valor, 
-                    string $campoCondicion, string $valorCondicion, int $borrar)
+                    string $campoCondicion, string $valorCondicion, 
+                    string $campoCondicion2, string $valorCondicion2,
+                    string $campoCondicion3, string $valorCondicion3,int $borrar)
     {
         if (!$tabla || !$campo ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
         }
 
-       if ($campoCondicion <> "NULL" && $valorCondicion <> "NULL") {
-             $R = dbExecSP("dbo.spP_ActualizarCampo", [
-            "Tabla" => $tabla,
-            "Campo" => $campo,
-            "Valor" => $valor,
-            "CampoCondicion" => $campoCondicion,
-            "ValorCondicion" => $valorCondicion,
-            "Borrar" => $borrar
-            ]);
-         } else {
-                 $R = dbExecSP("dbo.spP_ActualizarCampo", [
+        if ($campoCondicion <> "NULL" && $valorCondicion <> "NULL") {
+            if ($campoCondicion2 <> "NULL" && $valorCondicion2 <> "NULL") {
+                if ($campoCondicion3 <> "NULL" && $valorCondicion3 <> "NULL") {
+                    $R = dbExecSP("dbo.spP_ActualizarCampo", [
+                    "Tabla" => $tabla,
+                    "Campo" => $campo,
+                    "Valor" => $valor,
+                    "CampoCondicion" => $campoCondicion,
+                    "ValorCondicion" => $valorCondicion,
+                    "CampoCondicion2" => $campoCondicion2,
+                    "ValorCondicion2" => $valorCondicion2,
+                    "CampoCondicion3" => $campoCondicion3,
+                    "ValorCondicion3" => $valorCondicion3,
+                    "Borrar" => $borrar
+                ]);
+                } else {
+                     $R = dbExecSP("dbo.spP_ActualizarCampo", [
+                    "Tabla" => $tabla,
+                    "Campo" => $campo,
+                    "Valor" => $valor,
+                    "CampoCondicion" => $campoCondicion,
+                    "ValorCondicion" => $valorCondicion,
+                    "CampoCondicion2" => $campoCondicion2,
+                    "ValorCondicion2" => $valorCondicion2,
+                    "Borrar" => $borrar
+                ]);
+                }
+            } else {    
+                $R = dbExecSP("dbo.spP_ActualizarCampo", [
                 "Tabla" => $tabla,
                 "Campo" => $campo,
-                "Valor" => $valor
-          ]);
-         }
+                "Valor" => $valor,
+                "CampoCondicion" => $campoCondicion,
+                "ValorCondicion" => $valorCondicion,
+                "Borrar" => $borrar
+                ]);
+            }    
+        } else {
+            $R = dbExecSP("dbo.spP_ActualizarCampo", [
+                    "Tabla" => $tabla,
+                    "Campo" => $campo,
+                    "Valor" => $valor,
+                    "Borrar" => $borrar
+            ]);
+        }           
+                 
      
         if (!$R) {
             throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica

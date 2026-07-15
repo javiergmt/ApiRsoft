@@ -38,10 +38,10 @@ class inicio
                 $_SESSION['db_nombre'] = Trim($R['db_nombre']);
                 $_SESSION['logged'] = TRUE; 
                 // Completar con 0 a izquierda el idCliente a 4 dígitos
-                $_SESSION['idCliente'] = 'Rs'.str_pad(Trim($R['idCliente']), 4, "0", STR_PAD_LEFT);
+                $_SESSION['idCliente'] = 'Rs'.str_pad(Trim($R['idResto']), 4, "0", STR_PAD_LEFT);
                 $_SESSION['usuario'] = $usuario;
                 $_SESSION['pass'] = $pass;
-
+                //echo 'Rs'.str_pad(Trim($R['idResto']), 4, "0", STR_PAD_LEFT);
                 
                 $R = [
                     "Ok" => TRUE

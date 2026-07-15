@@ -21,7 +21,7 @@ function facturaElectronica(bool $homo,string $crt,string $key,string $cuitEmiso
     $F =  $this->getFactElect($homo,$crt,$key,$cuitEmisor,$tipoIvaEmisor,$ptoVta,$clienteTipoIva,$clienteCuit,$total,$neto,$iva,$tipoComp,$compAsoc,$letraCompAsoc);
 
     if ($F['Resultado'] != "A") {
-        throw new Exception("Error al generar la factura electronica: " . $F['Resultado']);
+        throw new Exception("Error al generar la factura electronica: " . $F['ErrMsg']);
     }
     $letra = $F['letra'];
     $codComp = $F['TipoComp'];
@@ -37,7 +37,7 @@ function facturaElectronica(bool $homo,string $crt,string $key,string $cuitEmiso
             $asunto = "Factura Electrónica ".$tipoComp." Nro ".$nroComp;
         }
         if ($cuerpo == '') {
-            $cuerpo = "Estimado/a ".$clienteNombre."\nAdjuntamos la Factura Electrónica Nro ".$nroComp.".\n\nSaludos Cordiales.";
+            $cuerpo = "Estimado/a ".$clienteNombre."\nAdjuntamos la Factura Electronica Nro ".$nroComp.".\n\nSaludos Cordiales.";
         }
         
         $pdf =  $this->getPdf($tipoComp,$letra,$codComp,$copia,$nroComp,$puntoVta,$fecha,
@@ -66,6 +66,8 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
     string $clienteTipoIva,string $clienteDoc,string $clienteCuit,string $clienteNombre , string $clienteDomicilio,string $cae,string $vtoCae,
     float $neto, float $iva, float $total, array $detalle)
 {
+    $ivaEmisor = $tipoIvaEmisor;
+    $ivaCliente = $clienteTipoIva;
     if ($tipoIvaEmisor == "RI") {
         $tipoIvaEmisor = "IVA Responsable Inscripto";
     } elseif ($tipoIvaEmisor == "MT") {
@@ -175,7 +177,7 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
 
     //$pdf->SetXY( 188, 210 ); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 85, 8, 'Subtotal', 0, 0, 'L');
     //$pdf->SetXY( 188, 218 ); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 85, 8, 'Bonif', 0, 0, 'L');
-    if ($tipoIvaEmisor == "RI" ) { 
+    if ($ivaEmisor == "RI" && $letra == "A") {
         $pdf->SetXY( 158, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "Importe Neto: $", 0, 0, 'R');
         $pdf->SetXY( 188, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  number_format($total,2,",","."), 0, 0, 'R');
         $pdf->SetXY( 158, 234 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "Iva 21%: $", 0, 0, 'R');
@@ -186,6 +188,20 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
         $pdf->SetXY( 158, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  "TOTAL: $", 0, 0, 'R');
         $pdf->SetXY( 188, 226 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 17, 8,  number_format($total,2,",","."), 0, 0, 'R');
 
+    }
+
+    if ($ivaEmisor == "RI" && $ivaCliente == "MT")
+    {
+        $pdf->SetXY( 15, 226 ); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 190, 5, "El credito fiscal discriminado en el presente comprobante" , 0, 'L');
+        $pdf->SetXY( 15, 234 ); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 190, 5," solo podra ser computado a efectos del Regimen de Sostenimiento", 0, 'L');
+        $pdf->SetXY( 15, 242); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 190, 5,"e Inclusion Fiscal para Pequeños Contribuyentes de la Ley 27.618", 0, 'L');
+  
+    }  
+
+    if ($letra == "B") {
+        $pdf->SetXY( 15, 226 ); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 190, 5, "Regimen de Transparencia Fiscal Ley 27743", 0, 'L');
+        $pdf->SetXY( 15, 234 ); $pdf->SetFont( "Arial", "B", 8 ); $pdf->Cell( 190, 5," Iva Contenido $".number_format($iva,2,",","."), 0, 'L');
+       
     }
 
     $pdf->SetXY( 158, 252 ); $pdf->SetFont( "Arial", "B", 9 ); $pdf->Cell( 85, 8,  "CAE: ".$cae, 0, 0, 'L');
@@ -221,8 +237,9 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
     if (file_exists('local.txt') or file_exists('local19.txt')) {
         $idCliente = 'Rs0001';
     } else {
-        $idCliente = $_SESSION['idCliente'];
+        $idCliente = trim($_SESSION['idCliente']);
     }
+    //echo "facturas/".$idCliente."/".$clienteNombre."_FE_".$cuitEmisor."_".$letra."_".$puntoVta."_".$nroComp.".pdf";
     $salida = 'facturas/'.$idCliente.'/'.$clienteNombre.'_FE_'.$cuitEmisor.'_'.$letra.'_'.$puntoVta.'_'.$nroComp.'.pdf';
     $pdf->Output('F',$salida);
     return $salida;
@@ -303,6 +320,9 @@ try {
     // Letra B : 6 Factura - 7 Nota de Débito - 8 Nota de Crédito
     // Letra C : 11 Factura - 12 Nota de Débito - 13 Nota de Crédito
     $tipo_doc=99;
+    $tipo_cbte=1;
+    $nro_doc="00000000000";
+    $letra="B";
     if ($tipoIvaEmisor == "RI") {
         if ($clienteTipoIva == "RI" ) {
             $letra = "A";
@@ -325,7 +345,7 @@ try {
                 $tipo_doc = 99;
                 $nro_doc = "0";
             } else {
-                $tipo_doc = 96;
+                $tipo_doc = 80;
                 $nro_doc = $clienteCuit;
             }  
         } else {
@@ -425,6 +445,8 @@ try {
         $cancela_misma_moneda_ext, $condicion_iva_receptor_id);
 
     # Agrego los comprobantes asociados (solo para notas de crédito y débito):
+    $tipo = 1;
+    
     if ($tipo_cbte == 3 || $tipo_cbte == 13 || $tipo_cbte == 8 ) {
         if ($letraCompAsoc == "A") {
             $tipo = 1;
@@ -542,7 +564,7 @@ try {
     file_put_contents("resultado.txt", print_r($R, true));
 
 } catch (Exception $e) {
-	echo 'Excepción: ',  $e->getMessage(), "\n";
+	//echo 'Excepción: ',  $e->getMessage(), "\n";
 	if (isset($WSAA)) {
 	    //echo "WSAA.Excepcion: $WSAA->Excepcion \n";
 	    //echo "WSAA.Traceback: $WSAA->Traceback \n";

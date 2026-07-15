@@ -6,7 +6,7 @@ class facturas
 {
     public function facturaCrear( int $idPedido, int $NroMesa, bool $PagoEnMesa, int $fiscal, int $idRepartidor,
     int $idObsDesc, int $idUsuario, int $idCliente, float $Total, int $TipoDesc, float $ImpDesc,
-    string $nombreClie, string $cuitClie, string $ivaClie,
+    string $nombreClie, string $cuitClie, string $ivaClie,string $tipo,
     float $propina=0.0,string $caeNro="", string $caeVto="", string $Nro="", string $NroCompAsoc="")
     {
         if (!$NroMesa && !$idPedido) {
@@ -34,7 +34,8 @@ class facturas
             "caeNro" => $caeNro,
             "caeVto" => $objeto_caeVto->format('Y/m/d'),
             "Nro" => $Nro,
-            "NroCompAsoc" => $NroCompAsoc
+            "NroCompAsoc" => $NroCompAsoc,
+            "tipo" => $tipo 
         ]);
 
         if (!$R) {
