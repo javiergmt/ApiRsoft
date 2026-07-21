@@ -41,6 +41,7 @@ class inicio
                 $_SESSION['idCliente'] = 'Rs'.str_pad(Trim($R['idResto']), 4, "0", STR_PAD_LEFT);
                 $_SESSION['usuario'] = $usuario;
                 $_SESSION['pass'] = $pass;
+                $_SESSION['mozos'] = TRUE;//Trim($R['modMozos']);
                 //echo 'Rs'.str_pad(Trim($R['idResto']), 4, "0", STR_PAD_LEFT);
                 
                 $R = [

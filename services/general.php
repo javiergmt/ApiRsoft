@@ -32,6 +32,26 @@ class general
         return $R;
     }
 
+    public function mozosPass(string $pass)
+    {
+        if (!file_exists('local.txt') && !file_exists('local19.txt')) {
+            if (!isset($_SESSION['mozos']) || $_SESSION['mozos'] !== TRUE) {
+                throw new Exception("Acceso denegado"); // si el usuario no tiene permisos de mozo, se lanza una excepción
+            }
+        }
+        
+        $R = dbExecSP("dbo.spG_mozosPass", [
+            "pass" => $pass
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+        
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
     public function empresa()
     {
         $R = dbExecSP("dbo.spG_Empresa", [],FALSE);
