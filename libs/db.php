@@ -25,13 +25,15 @@ function db_connect()
             PDO::ATTR_EMULATE_PREPARES => TRUE,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             //PDO::ATTR_STRINGIFY_FETCHES => FALSE,
-            PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => TRUE
+            PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => TRUE,
+            PDO::SQLSRV_ATTR_ENCODING => PDO::SQLSRV_ENCODING_UTF8
             ));
         } else {
             // Si las variables de Session estan vacias
             // Tomo los datos fijos de la base de datos General
             // Sino, tomo los datos de la Session
-            if (!isset($_SESSION['logged']) || $_SESSION['logged'] === FALSE) {
+            if ( (!isset($_SESSION['logged']) || $_SESSION['logged'] === FALSE) || 
+               (isset($_SESSION['logPrincipal']) && $_SESSION['logPrincipal'] === 1)) {
                 $usuario = getUsuario();
                 $password = getPassword();
                 $db = getDb();
@@ -47,7 +49,8 @@ function db_connect()
             PDO::ATTR_EMULATE_PREPARES => TRUE,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             //PDO::ATTR_STRINGIFY_FETCHES => FALSE,
-            PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => TRUE
+            PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => TRUE,
+            PDO::SQLSRV_ATTR_ENCODING => PDO::SQLSRV_ENCODING_UTF8
             ));
         }
         

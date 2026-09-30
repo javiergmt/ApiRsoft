@@ -35,7 +35,7 @@ class general
     public function mozosPass(string $pass)
     {
         if (!file_exists('local.txt') && !file_exists('local19.txt')) {
-            if (!isset($_SESSION['mozos']) || $_SESSION['mozos'] !== TRUE) {
+            if (!isset($_SESSION['mozos']) && $_SESSION['mozos'] !== 1 ) {
                 throw new Exception("Acceso denegado"); // si el usuario no tiene permisos de mozo, se lanza una excepción
             }
         }
@@ -244,7 +244,7 @@ class general
         return $R;
     }
 
-     public function verificarCampo(string $tabla, string $campo, string $valor)
+    public function verificarCampo(string $tabla, string $campo, string $valor)
     {
         if (!$tabla || !$campo  ) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -265,7 +265,37 @@ class general
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }
+
+     public function actPass(string $pass, int $idUsuario)
+    {
+        if (!$pass) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+        //$pass = 'vÔª';
+        $pass = base64_decode($pass);
+        $utf8 = mb_convert_encoding($pass, 'UTF-8', 'Windows-1252');
+       
+        //echo "pass: $utf8\n";
+        //$pass = "(Ž`?";
+    
+        $R = dbExecSP("dbo.spP_ActPass", [
+                "pass" => $utf8,
+                "id" => $idUsuario
+          ],TRUE);
+        
+     
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+        
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
     //------------------------------------------------------------------------------------------------------
+
+    
+
+    
 
 }
 ?>

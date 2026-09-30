@@ -240,6 +240,27 @@ class mesas
         return $R;
     }
 
+    public function mesaReabrir(int $NroMesa, string $Tipo, string $Nro, int $idUsuario)
+    {
+        if (!$NroMesa || !$Tipo || !$Nro || !$idUsuario) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $R = dbExecSP("dbo.spP_MesaReabrir", [
+            "NroMesa" => $NroMesa,
+            "Tipo" => $Tipo,
+            "Nro" => $Nro,
+            "idUsuario" => $idUsuario
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
     public function mesaAddDet(
         int $NroMesa,
         int $idDetalle,
@@ -473,6 +494,24 @@ class mesas
             "puntoDeVenta" => $PuntoDeVenta,
             "idSeccion" => $idSeccion,
             //"borrar" => 1 // Indica que se quiere borrar el renglón
+        ]);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function mesaVaciar(int $NroMesa)
+    {
+        if (!$NroMesa) {
+            throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
+        }
+
+        $R = dbExecSP("dbo.spD_MesaVaciar", [
+            "nromesa" => $NroMesa
         ]);
 
         if (!$R) {

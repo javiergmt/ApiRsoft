@@ -120,17 +120,44 @@ try {
     // inicia la session de PHP
     session_start();
     if (!file_exists('local.txt') and !file_exists('local19.txt')) {
-        if ( ($data['service'] == 'inicio' && $data['method'] == 'validarCliente')
-
-        ){
-            // Si el servicio es login y el metodo es checkUserPassword, no se requiere autenticacion
+        if ( ($data['service'] == 'inicio' && $data['method'] == 'validarCliente') ||
+             ($data['service'] == 'inicio' && $data['method'] == 'logout') ||
+             ($data['service'] == 'carta' && $data['method'] == 'inicioCarta'))
+        {
             // Se permite el acceso al login sin estar logueado
             // Esto es para que se pueda hacer login desde la api
 
-        } elseif (!isset($_SESSION['logged']) || $_SESSION['logged'] === FALSE) {
+        } else
+           
+           if (!isset($_SESSION['logged']) || $_SESSION['logged'] === FALSE) {
+                if ($data['service'] == 'rsoft' && $data['method'] == 'getClientes'
+                || $data['service'] == 'rsoft' && $data['method'] == 'addCliente'
+                || $data['service'] == 'rsoft' && $data['method'] == 'modifCliente'
+                || $data['service'] == 'inicio' && $data['method'] == 'logout') {
+                    // Solo para metodos de RsoftClientes
+                
+                } else {
+                    throw new Exception("No autorizado");
+                } 
+  
+           }else{
             //echo "Usuario logueado: " . (isset($_SESSION['usuario']) ? $_SESSION['usuario'] : 'Desconocido') . "\n";
-                throw new Exception("No autorizado");
-        }
+            if (isset($_SESSION['usuario']) && $_SESSION['usuario'] == 'usuarioCarta') {
+                // Usuario es usuarioCarta
+                if (($data['service'] == 'rubros' && $data['method'] == 'rubros') 
+                    || ($data['service'] == 'inicio' && $data['method'] == 'logout')
+                    || ($data['service'] == 'rubros' && $data['method'] == 'subRubros')
+                    || ($data['service'] == 'platos' && $data['method'] == 'platos') 
+                    || ($data['service'] == 'general' && $data['method'] == 'empresa') 
+                    || ($data['service'] == 'platos' && $data['method'] == 'platosPreciosAct') 
+                    ) {
+                    // ok puede obtener los datos
+                } else {
+                    throw new Exception("No autorizado");
+                }
+            }
+        }       
+        
     }
     // Creo una instancia del procesador de servicios
     // Este procesador es el que se encarga de llamar al servicio y al metodo

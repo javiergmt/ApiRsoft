@@ -237,7 +237,7 @@ function getPdf(string $tipoComp,string $letra,string $codComp,string $copia,str
     if (file_exists('local.txt') or file_exists('local19.txt')) {
         $idCliente = 'Rs0001';
     } else {
-        $idCliente = trim($_SESSION['idCliente']);
+        $idCliente = trim($_SESSION['db_nombre']);
     }
     //echo "facturas/".$idCliente."/".$clienteNombre."_FE_".$cuitEmisor."_".$letra."_".$puntoVta."_".$nroComp.".pdf";
     $salida = 'facturas/'.$idCliente.'/'.$clienteNombre.'_FE_'.$cuitEmisor.'_'.$letra.'_'.$puntoVta.'_'.$nroComp.'.pdf';

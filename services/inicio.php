@@ -37,13 +37,14 @@ class inicio
                 $_SESSION['db_password'] = Trim($R['db_password']);
                 $_SESSION['db_nombre'] = Trim($R['db_nombre']);
                 $_SESSION['logged'] = TRUE; 
+                $_SESSION['logPrincipal'] = 0; 
                 // Completar con 0 a izquierda el idCliente a 4 dígitos
                 $_SESSION['idCliente'] = 'Rs'.str_pad(Trim($R['idResto']), 4, "0", STR_PAD_LEFT);
                 $_SESSION['usuario'] = $usuario;
                 $_SESSION['pass'] = $pass;
-                $_SESSION['mozos'] = TRUE;//Trim($R['modMozos']);
-                //echo 'Rs'.str_pad(Trim($R['idResto']), 4, "0", STR_PAD_LEFT);
-                
+                $_SESSION['mozos'] = $R['modMozos'];
+                //echo json_encode($R);
+          
                 $R = [
                     "Ok" => TRUE
                     ];

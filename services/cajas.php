@@ -172,7 +172,7 @@ class cajas
         if (file_exists('local.txt') or file_exists('local19.txt')) {
             $idCliente = 'Rs0001';
         } else {
-            $idCliente = trim($_SESSION['idCliente']);
+            $idCliente = trim($_SESSION['db_nombre']);
         }
         $salida = 'cierres/'.$idCliente.'/Cierre_'.$idCierre.'.pdf';
         //echo $salida;

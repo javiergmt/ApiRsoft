@@ -69,7 +69,7 @@ public function notaCreditoCrear( string $Nro, string $nNro, string $Tipo)
     }
 
     public function facturaPagar( string $Nro, float $Importe,int $idCliente, int $idFormaPago, 
-     int $idTarjeta,int $idMoneda, int $ImporteMoneda, float $Cotizacion, int $Billetes)
+     int $idTarjeta,int $idMoneda, int $ImporteMoneda, float $Cotizacion, int $Billetes, string $nroCupon = '', int $cantCuotas = 0)
     {
         if (!$Nro) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -84,7 +84,9 @@ public function notaCreditoCrear( string $Nro, string $nNro, string $Tipo)
             "idMoneda" => $idMoneda,
             "importeMoneda" => $ImporteMoneda,
             "cotizacion" => $Cotizacion,
-            "billetes" => $Billetes
+            "billetes" => $Billetes,
+            "nroCupon" => $nroCupon,
+            "cantCuotas" => $cantCuotas
         ]);
 
         if (!$R) {
