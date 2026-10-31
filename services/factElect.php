@@ -1,6 +1,5 @@
 <?php
 
-
 error_reporting(0);
 
 class factElect
@@ -429,33 +428,34 @@ try {
 
     if ($tipo_cbte == 6 || $tipo_cbte == 7 || $tipo_cbte == 8 || $tipo_cbte == 3 || $tipo_cbte == 13) 
     {
-        $condicion_iva_receptor_id = 5;
+        $condicion_iva_receptor_id = "5";
     } else {
-        $condicion_iva_receptor_id = 1;
+        $condicion_iva_receptor_id = "1";
     }
          
 	
 	# Inicializo la factura interna con los datos de la cabecera
 
-    $ok = $WSFEv1->CrearFactura($concepto, $tipo_doc, $nro_doc, 
-	    $tipo_cbte, $punto_vta, $cbt_desde, $cbt_hasta, 
-	    $imp_total, $imp_tot_conc, $imp_neto, $imp_iva, $imp_trib, $imp_op_ex,
-	    $fecha_cbte, $fecha_venc_pago, $fecha_serv_desde, $fecha_serv_hasta,
-        $moneda_id, $moneda_ctz, $caea, $fecha_hs_gen, 
-        $cancela_misma_moneda_ext, $condicion_iva_receptor_id);
+    $ok = $WSFEv1->CrearFactura($concepto, $tipo_doc, $nro_doc,
+    $tipo_cbte, $punto_vta, $cbt_desde, $cbt_hasta,
+    $imp_total, $imp_tot_conc, $imp_neto, $imp_iva, $imp_trib, $imp_op_ex,
+    $fecha_cbte, $fecha_venc_pago, $fecha_serv_desde, $fecha_serv_hasta,
+    $moneda_id, $moneda_ctz, $caea, $fecha_hs_gen);
+
+    $ok = $WSFEv1->EstablecerCampoFactura("cancela_misma_moneda_ext", "N");
+    $ok = $WSFEv1->EstablecerCampoFactura("condicion_iva_receptor_id", $condicion_iva_receptor_id);
 
     # Agrego los comprobantes asociados (solo para notas de crédito y débito):
     $tipo = 1;
     
     if ($tipo_cbte == 3 || $tipo_cbte == 13 || $tipo_cbte == 8 ) {
-        if ($letraCompAsoc == "A") {
+        if ($tipo_cbte == 3) {
             $tipo = 1;
-        } elseif ($letraCompAsoc == "B") {
-            $tipo = 1;
-        } elseif ($letraCompAsoc == "C") {
+        } elseif ($tipo_cbte == 8) {
+            $tipo = 6;
+        } else {
             $tipo = 11;
-        }    
-        //$tipo = 1; # tipo de comprobante asociado 
+        }
         $ok = $WSFEv1->AgregarCmpAsoc($tipo, $punto_vta, $compAsoc);
     }
         
@@ -488,8 +488,8 @@ try {
     if ($tipoIvaEmisor == "RI" ) {
         # Agrego tasas de IVA
         $iva_id = 5;             # 21%
-        $base_imp = "100.00";
-        $importe = "21.00";
+        $base_imp = $imp_neto;
+        $importe = $imp_iva;
         $ok = $WSFEv1->AgregarIva($iva_id, $base_imp, $importe);
     }
     # Agrego tasas de IVA 
@@ -521,7 +521,12 @@ try {
         
 	# Llamo al WebService de Autorización para obtener el CAE
 	$cae = $WSFEv1->CAESolicitar();
-	
+
+    # Guardo el XML enviado a ARCA para debug
+    //$RutaExe = 'Factura_Enviada_ARCA.xml';
+    //file_put_contents($RutaExe, $WSFEv1->XmlRequest);
+
+
     /*
 	echo "Resultado=$WSFEv1->Resultado \n";
 	echo "Nro CBTE=$WSFEv1->CbteNro \n";

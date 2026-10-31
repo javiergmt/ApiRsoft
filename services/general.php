@@ -27,7 +27,7 @@ class general
         if (!$R) {
             throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
         }
-        
+        $_SESSION['validado'] = 1;
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
     }

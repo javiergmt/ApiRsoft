@@ -18,10 +18,11 @@ class monitor
         return $R;
     }
 
-    public function getMonDetalle(int $Todo)
+    public function getMonDetalle(int $Todo, int $idcub)
     {
         $R = dbExecSP("dbo.spG_MonDetalle", [
-            "Todo" => $Todo
+            "Todo" => $Todo,
+            "idcub" => $idcub
         ],TRUE);
 
         if (!$R) {

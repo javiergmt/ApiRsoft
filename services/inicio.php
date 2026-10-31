@@ -32,24 +32,33 @@ class inicio
                     throw new Exception($R['error']); // si el SP devuelve un error, se lanza una excepción con el mensaje del error
                 } else {
                     // si el SP devuelve un resultado correcto, se devuelve ese resultado
+                    // Aca deberia cambiar de base de Datos y validar el usuario con la nueva base de datos
+                    
                     // Tomo los datos del cliente y los guardo en la sesión
-                $_SESSION['db_usuario'] = Trim($R['db_usuario']);
-                $_SESSION['db_password'] = Trim($R['db_password']);
-                $_SESSION['db_nombre'] = Trim($R['db_nombre']);
-                $_SESSION['logged'] = TRUE; 
-                $_SESSION['logPrincipal'] = 0; 
-                // Completar con 0 a izquierda el idCliente a 4 dígitos
-                $_SESSION['idCliente'] = 'Rs'.str_pad(Trim($R['idResto']), 4, "0", STR_PAD_LEFT);
-                $_SESSION['usuario'] = $usuario;
-                $_SESSION['pass'] = $pass;
-                $_SESSION['mozos'] = $R['modMozos'];
-                //echo json_encode($R);
-          
-                $R = [
-                    "Ok" => TRUE
-                    ];
-          
+
+                    $_SESSION['db_usuario'] = Trim($R['db_usuario']);
+                    $_SESSION['db_password'] = Trim($R['db_password']);
+                    $_SESSION['db_nombre'] = Trim($R['db_nombre']);
+                    $_SESSION['logged'] = TRUE; 
+                    $_SESSION['logPrincipal'] = 0; 
+                    // Completar con 0 a izquierda el idCliente a 4 dígitos
+                    $_SESSION['idCliente'] = 'Rs'.str_pad(Trim($R['idResto']), 4, "0", STR_PAD_LEFT);
+                    $_SESSION['usuario'] = $usuario;
+                    $_SESSION['pass'] = $pass;
+                    $_SESSION['mozos'] = $R['modMozos'];
+                    $_SESSION['idResto'] = $R['idResto'];
+                    $_SESSION['conMesas'] = $R['conMesas'] ?? FALSE; 
+                    $_SESSION['validado'] = 0;
+                    //echo json_encode($R);
+               
+                    $R = [
+                        "Ok" => TRUE,
+                        "modMozos" => $R['modMozos'] ?? FALSE,
+                        "conMesas" => $R['conMesas'] ?? FALSE,
+                        ];
+                
                 }
+                   
             }
         } else {
             $R = [

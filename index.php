@@ -119,6 +119,10 @@ try {
     // Auth    
     // inicia la session de PHP
     session_start();
+    // imprimir variables de sesión para depuración
+    // Esto es útil para ver el estado de la sesión durante el desarrollo
+    // Se puede comentar o eliminar en producción
+    // print_r($_SESSION);
     if (!file_exists('local.txt') and !file_exists('local19.txt')) {
         if ( ($data['service'] == 'inicio' && $data['method'] == 'validarCliente') ||
              ($data['service'] == 'inicio' && $data['method'] == 'logout') ||
@@ -126,8 +130,8 @@ try {
         {
             // Se permite el acceso al login sin estar logueado
             // Esto es para que se pueda hacer login desde la api
-
-        } else
+         //echo "Paso1"."\n";
+        } else 
            
            if (!isset($_SESSION['logged']) || $_SESSION['logged'] === FALSE) {
                 if ($data['service'] == 'rsoft' && $data['method'] == 'getClientes'
@@ -135,13 +139,13 @@ try {
                 || $data['service'] == 'rsoft' && $data['method'] == 'modifCliente'
                 || $data['service'] == 'inicio' && $data['method'] == 'logout') {
                     // Solo para metodos de RsoftClientes
-                
+                //echo "Paso2"."\n";
                 } else {
                     throw new Exception("No autorizado");
                 } 
   
-           }else{
-            //echo "Usuario logueado: " . (isset($_SESSION['usuario']) ? $_SESSION['usuario'] : 'Desconocido') . "\n";
+           }else
+            // Aca el usuario ya esta logueado
             if (isset($_SESSION['usuario']) && $_SESSION['usuario'] == 'usuarioCarta') {
                 // Usuario es usuarioCarta
                 if (($data['service'] == 'rubros' && $data['method'] == 'rubros') 
@@ -150,15 +154,27 @@ try {
                     || ($data['service'] == 'platos' && $data['method'] == 'platos') 
                     || ($data['service'] == 'general' && $data['method'] == 'empresa') 
                     || ($data['service'] == 'platos' && $data['method'] == 'platosPreciosAct') 
-                    ) {
-                    // ok puede obtener los datos
-                } else {
+                    )
+                {
+                //echo "Paso3"."\n";
+                }    
+
+            } else 
+              // Usuario no es usuarioCarta y no esta validado
+              if (isset($_SESSION['validado']) && $_SESSION['validado'] == 0 && $data['method'] == 'usuariosPass')
+              {   
+                 //Se permite el acceso para validar el usuario mediante el metodo usuariosPass                    
+              }else {
+                 if (isset($_SESSION['validado']) && $_SESSION['validado'] == 1)
+                 {
+                    //echo "Usuario validado";
+                 }  else {
                     throw new Exception("No autorizado");
-                }
-            }
-        }       
-        
-    }
+                 }
+              }
+                
+            
+        }
     // Creo una instancia del procesador de servicios
     // Este procesador es el que se encarga de llamar al servicio y al metodo
     // El procesador recibe el nombre del servicio, el nombre del metodo y los parametros que se le pasan al metodo

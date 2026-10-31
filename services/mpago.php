@@ -9,12 +9,6 @@ class mpago
        
         $url = 'https://api.mercadopago.com/terminals/v1/list?limit=50&offset=0';
         $curl = curl_init();
-        
-        /*$fields = array(
-            'service' => 'comercios',
-            'method' => $method,
-            'params' => $params              
-        );*/
     
         $access_token = $this->getToken();
         //$json_string = json_encode($fields);
@@ -47,7 +41,8 @@ class mpago
         // This is a placeholder implementation
         $fields = array(
         "type" => "point",
-        "external_reference" => "resto1-1-M12-" . time(),
+        //"external_reference" => "resto1-1-M12-" .time(),
+        "external_reference" => $this->uuidv4(),
         "expiration_time" => "PT5M",
         "description" => $descripcion,
         "transactions" => array(
@@ -91,11 +86,15 @@ class mpago
         if (!$DATA = @json_decode($R, TRUE)) {
             throw new Exception("Imposible obtener datos de respuesta");
         }
+        // Grabo la orden para recibir el WebHook
+        if (isset($DATA['id'])) {
+            $this->generarOrden($DATA['id']);
+        }
 
         return $DATA;
     }
 
-    public function mpConsultarOrden(string $idOrden)
+    public function mpConsultarOrdenMp(string $idOrden)
     {
        
         $url = 'https://api.mercadopago.com/v1/orders/' . $idOrden;
@@ -121,6 +120,13 @@ class mpago
         }
         
         return $DATA;
+    }
+
+    public function mpConsultarOrden(string $idOrden)
+    {
+         return dbExecSP(getDb() . ".dbo.sp_mpConsultarOrden", [
+        "idOrden" => $idOrden
+        ]);
     }
 
     public function mpCancelarOrden(string $idOrden,string $idempotencyKey)
@@ -181,6 +187,43 @@ class mpago
         return $DATA;
     }
 
+    public function mpCambiarModoTerminal(string $id,string $modo)
+    {
+        
+        $fields = array(
+            "terminals" => array(
+                array(
+                    "id" => $id,
+                    "operating_mode" => $modo
+                )
+            )
+        );
+
+        $url = 'https://api.mercadopago.com/terminals/v1/setup';
+   
+        $curl = curl_init();
+
+        $access_token = $this->getToken();
+        curl_setopt($curl, CURLOPT_URL, $url);     
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Authorization: Bearer ' . $access_token]);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+        curl_setopt($curl, CURLOPT_POSTFIELDS,json_encode($fields));  
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $R = curl_exec($curl);
+        if(curl_errno($curl))
+        {
+            throw new Exception("Error al enviar el mensaje con CURL". " - " . curl_error($curl));
+        }
+        curl_close($curl);
+        if (!$DATA = @json_decode($R, TRUE)) {
+            throw new Exception("Imposible obtener datos de respuesta");
+        }
+
+        return $DATA;
+    }
 
     private function getToken()
     {
@@ -189,7 +232,7 @@ class mpago
         $R = dbExecSP("dbo.spG_MpGetToken", [
         ]); 
         if (!$R) {
-             return 'APP_USR-3793350834274694-090713-8905beffdb4d16f86398456a588d2c8c-3672302124';
+             return 'APP_USR-1290352043861328-091710-745be1c17ba1829066cbd78dce5c5a90-3694787869';
         }
         $token = $R['sToken'] ?? null;
         $refresh = $R['sRefresh'] ?? null;
@@ -270,8 +313,15 @@ class mpago
 
         $_SESSION['logPrincipal'] = 0;    
         return $authUrl;
+    }
 
-
+    function generarOrden(string $idOrden)
+    {
+        // Marcar la sesión como logPrincipal para indicar que el proximo dbConnet() es a la base de datos principal
+        return dbExecSP(getDb() . ".dbo.sp_mpGrabarOrden", [
+        "idResto" => $_SESSION['idResto'],
+        "idOrden" => $idOrden
+        ]);
 
     }
 
