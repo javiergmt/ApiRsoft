@@ -293,6 +293,41 @@ class general
     }
     //------------------------------------------------------------------------------------------------------
 
+    public function paramPv(int $pv)
+    {
+        $R = dbExecSP("dbo.spG_ParamPv", ["pv" => $pv],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function paramPvRubros(int $pv)
+    {
+        $R = dbExecSP("dbo.spG_ParamPvRubros", ["pv" => $pv],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
+
+    public function paramPvSectores(int $pv)
+    {
+        $R = dbExecSP("dbo.spG_ParamPvSectores", ["pv" => $pv],TRUE);
+
+        if (!$R) {
+            throw new Exception("Sin datos"); // si el SP no devuelve nada, se lanza una excepción generica
+        }
+
+        // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
+        return $R;
+    }
     
 
     
