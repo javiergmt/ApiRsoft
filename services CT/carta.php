@@ -42,6 +42,7 @@ class carta
                 $_SESSION['usuario'] = 'usuarioCarta';
                 $_SESSION['pass'] = 'passCarta';
                 $_SESSION['mozos'] = $R['modMozos'];
+                $_SESSION['modMonitor'] = $R['modMonitor'] ?? FALSE;
                 //echo json_encode($R);
                 
                 $R = [

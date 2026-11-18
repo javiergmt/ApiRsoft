@@ -49,12 +49,14 @@ class inicio
                     $_SESSION['idResto'] = $R['idResto'];
                     $_SESSION['conMesas'] = $R['conMesas'] ?? FALSE; 
                     $_SESSION['validado'] = 0;
+                    $_SESSION['modMonitor'] = $R['modMonitor'] ?? FALSE;
                     //echo json_encode($R);
                
                     $R = [
                         "Ok" => TRUE,
                         "modMozos" => $R['modMozos'] ?? FALSE,
                         "conMesas" => $R['conMesas'] ?? FALSE,
+                        "modMonitor" => $R['modMonitor'] ?? FALSE,
                         ];
                 
                 }

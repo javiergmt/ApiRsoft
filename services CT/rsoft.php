@@ -22,7 +22,8 @@ class rsoft
         return $R;
    }
 
-   public function addCliente( int $idResto, string $nombreRest, string $db_usuario, string $db_password, string $db_nombre, int $modMozos)
+   public function addCliente( int $idResto, string $nombreRest, string $db_usuario, string $db_password, string $db_nombre, int $modMozos
+   ,int $conMesas, int $modMonitor)
    {
         if (!isset($idResto) || !isset($nombreRest) || !isset($db_usuario) || !isset($db_password) || !isset($db_nombre) || !isset($modMozos)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -34,7 +35,9 @@ class rsoft
             "db_usuario" => $db_usuario,
             "db_password" => $db_password,
             "db_nombre" => $db_nombre,
-            "modMozos" => $modMozos
+            "modMozos" => $modMozos,
+            "conMesas" => $conMesas,
+            "modMonitor" => $modMonitor
         ]);
 
         if (!$R) {
@@ -44,7 +47,8 @@ class rsoft
         // DEVUELVO el resultado del SP, esto se convierte a JSON automáticamente
         return $R;
    }    
-   public function modifCliente( int $idResto, string $nombreRest, string $db_usuario, string $db_password, string $db_nombre, int $modMozos)
+   public function modifCliente( int $idResto, string $nombreRest, string $db_usuario, string $db_password, string $db_nombre, int $modMozos
+   ,int $conMesas, int $modMonitor, int $activo)
    {
         if (!isset($idResto) || !isset($nombreRest) || !isset($db_usuario) || !isset($db_password) || !isset($db_nombre) || !isset($modMozos)) {
             throw new Exception("Parametros invalidos"); // esto llega en la respuesta de la api como {"error": "Invalid Data"}
@@ -56,7 +60,10 @@ class rsoft
             "db_usuario" => $db_usuario,
             "db_password" => $db_password,
             "db_nombre" => $db_nombre,
-            "modMozos" => $modMozos
+            "modMozos" => $modMozos,
+            "conMesas" => $conMesas,
+            "modMonitor" => $modMonitor,
+            "activo" => $activo
         ]);
 
         if (!$R) {
